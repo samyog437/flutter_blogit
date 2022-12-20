@@ -11,9 +11,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
       body: Container(
         // color: Color(0xFFad5389),
-        color: Colors.amber,
+        // color: Colors.amber,
         padding: const EdgeInsets.all(10),
         height: double.infinity,
         child: Align(
@@ -21,6 +24,13 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                const Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 20,
+                    // fontFamily: 'Montserrat BlackItalic',
+                  ),
+                ),
                 const Image(
                   image: AssetImage('assets/images/logo.png'),
                   width: 256,
@@ -50,14 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {},
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      ),
-                      // backgroundColor: MaterialStateProperty.all(Colors.amber),
-                    ),
+                    // style: ButtonStyle(
+                    //   shape: MaterialStateProperty.all(
+                    //     RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(18),
+                    //     ),
+                    //   ),
+                    //   // backgroundColor: MaterialStateProperty.all(Colors.amber),
+                    // ),
                     child: const Text('Login'),
                   ),
                 ),
@@ -68,13 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 40,
                   child: ElevatedButton(
-                    onPressed: () {},                                                                                 
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      ),
+                    onPressed: () {},
+                    // style: ButtonStyle(
+                    //   shape: MaterialStateProperty.all(
+                    //     RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(18),
+                    //     ),
+                    //   ),
+                    // ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber,
                     ),
                     child: const Text('Register'),
                   ),
