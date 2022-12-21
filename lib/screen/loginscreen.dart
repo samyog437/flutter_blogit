@@ -11,9 +11,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
       body: Container(
         // color: Color(0xFFad5389),
         // color: Colors.amber,
@@ -24,71 +21,88 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 20,
-                    // fontFamily: 'Montserrat BlackItalic',
-                  ),
-                ),
                 const Image(
                   image: AssetImage('assets/images/logo.png'),
                   width: 256,
                   height: 256,
                   fit: BoxFit.cover,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Username',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Username',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Password',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            hintText: 'Password',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
                 ),
                 SizedBox(
-                  width: double.infinity,
-                  height: 40,
+                  width: 250,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {},
-                    // style: ButtonStyle(
-                    //   shape: MaterialStateProperty.all(
-                    //     RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(18),
-                    //     ),
-                    //   ),
-                    //   // backgroundColor: MaterialStateProperty.all(Colors.amber),
-                    // ),
                     child: const Text('Login'),
                   ),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
+                const Text(
+                  'Already have an account?',
+                  style: TextStyle(color: Colors.white),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
                 SizedBox(
-                  width: double.infinity,
-                  height: 40,
+                  width: 250,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {},
-                    // style: ButtonStyle(
-                    //   shape: MaterialStateProperty.all(
-                    //     RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(18),
-                    //     ),
-                    //   ),
-                    // ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                    ),
                     child: const Text('Register'),
                   ),
                 ),

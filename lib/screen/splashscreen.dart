@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 2),
       () {
         Navigator.pushReplacementNamed(context, '/loginScreen');
       },
@@ -29,12 +29,17 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Text('Splash Screen'),
+            Image(
+              image: AssetImage('assets/images/logo.png'),
+              width: 256,
+              height: 256,
+              fit: BoxFit.cover,
+            ),
             SizedBox(
               height: 10,
             ),
             CircularProgressIndicator(
-              color: Colors.green,
+              color: Colors.white,
             ),
             SizedBox(
               height: 10,
