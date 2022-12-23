@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 
 ThemeData getApplicationTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: const Color(0xFFad5389),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        textStyle: const TextStyle(
-          fontSize: 18,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
+      scaffoldBackgroundColor: Colors.white,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(150, 40),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+          textStyle: const TextStyle(
+            fontSize: 18,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
-    ),
-  );
+      appBarTheme: const AppBarTheme(
+        centerTitle: true,
+        color: Color(0xFFad5389),
+        elevation: 4,
+      ));
 }
