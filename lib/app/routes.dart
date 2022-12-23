@@ -2,6 +2,7 @@ import 'package:blogit/app/theme_data.dart';
 import 'package:blogit/screen/bottom_screen/addblogscreen.dart';
 import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:blogit/screen/bottom_screen/homescreen.dart';
+import 'package:blogit/screen/bottom_screen/profilescreen.dart';
 import 'package:blogit/screen/loginscreen.dart';
 import 'package:blogit/screen/registerscreen.dart';
 import 'package:blogit/screen/splashscreen.dart';
@@ -23,6 +24,10 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/loginScreen': (context) => const LoginScreen(),
         '/registerScreen': (context) => const RegisterScreen(),
+        '/dashboardScreen': (context) => const DashboardScreen(),
+        '/homeScreen': (context) => const HomeScreen(),
+        '/addBlogScreen': (context) => const AddBlogScreen(),
+        '/profileScreen': (context) => const ProfileScreen(),
       },
     );
   }

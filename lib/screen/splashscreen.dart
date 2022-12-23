@@ -10,7 +10,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  
   @override
   void initState() {
     // TODO: implement initState
@@ -26,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFad5389),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
