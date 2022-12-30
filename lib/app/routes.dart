@@ -7,8 +7,6 @@ import 'package:blogit/screen/loginscreen.dart';
 import 'package:blogit/screen/registerscreen.dart';
 import 'package:blogit/screen/splashscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

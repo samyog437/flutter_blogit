@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,7 +10,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     Future.delayed(
       const Duration(seconds: 3),
       () {
@@ -25,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFad5389),
+      backgroundColor: const Color(0xFFad5389),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,6 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Text(
               'v1.0.0',
+              style: TextStyle(
+                color: Colors.white,
+              ),
             )
           ],
         ),
