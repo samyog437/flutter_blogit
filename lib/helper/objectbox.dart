@@ -26,4 +26,12 @@ class ObjectBoxInstance {
   List<User> getAllUser() {
     return _user.getAll();
   }
+
+  User? loginUser(String username, String password) {
+    return _user
+        .query(
+            User_.username.equals(username) & User_.password.equals(password))
+        .build()
+        .findFirst();
+  }
 }

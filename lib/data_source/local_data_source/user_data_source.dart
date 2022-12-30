@@ -20,4 +20,12 @@ class UserDataSource {
       throw Exception('Error in getting all users');
     }
   }
+
+  Future<User?> loginUser(String username, String password) {
+    try {
+      return Future.value(objectBoxInstance.loginUser(username, password));
+    } catch (e) {
+      return Future.value(null);
+    }
+  }
 }

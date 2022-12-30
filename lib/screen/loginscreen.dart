@@ -1,4 +1,7 @@
+import 'package:blogit/model/user.dart';
+import 'package:blogit/repository/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,6 +12,26 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  _loginUser() async {
+    User? status = await UserRepositoryImpl()
+        .loginUser(_usernameController.text, _passwordController.text);
+    _showMessage(status!.userId);
+  }
+
+  _showMessage(int status) {
+    if (status > 0) {
+      MotionToast.success(
+        description: const Text('Logged in successfully'),
+      ).show(context);
+    } else {
+      MotionToast.success(
+        description: const Text('Error to login'),
+      ).show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +66,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         TextFormField(
+                          controller: _usernameController,
                           decoration: InputDecoration(
+                            errorStyle: const TextStyle(
+                                color: Colors.white,
+                                backgroundColor: Colors.red),
                             hintText: 'Username',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -51,6 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
+                          validator: ((value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter username';
+                            }
+                            return null;
+                          }),
                         ),
                         const SizedBox(
                           height: 20,
@@ -63,13 +96,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         TextFormField(
+                          controller: _passwordController,
                           decoration: InputDecoration(
+                              errorStyle: const TextStyle(
+                                  color: Colors.white,
+                                  backgroundColor: Colors.red),
                               hintText: 'Password',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               filled: true,
                               fillColor: Colors.white),
+                          validator: ((value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter password';
+                            }
+                            return null;
+                          }),
                         ),
                         const SizedBox(
                           height: 20,
@@ -89,7 +132,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/dashboardScreen');
+                        if (_formKey.currentState!.validate()) {}
+                        _loginUser();
                       },
                       child: const Text('Login'),
                     ),

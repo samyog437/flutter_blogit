@@ -1,4 +1,7 @@
-c
+import 'package:blogit/model/user.dart';
+import 'package:blogit/repository/user_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -24,11 +27,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _showMessage(int status) {
     if (status > 0) {
       MotionToast.success(
-        description: const Text('Student added successfully'),
+        description: const Text('Registered Successfully'),
       ).show(context);
     } else {
       MotionToast.error(
-        description: const Text('Error in added user'),
+        description: const Text('Error to add user'),
       ).show(context);
     }
   }
