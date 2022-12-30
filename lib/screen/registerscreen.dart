@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+c
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -9,6 +9,29 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController(text: 'TestUser');
+  final _emailController = TextEditingController(text: 'test@email.com');
+  final _passwordController = TextEditingController(text: 'testuser');
+
+  _saveUser() async {
+    User user = User(_usernameController.text, _emailController.text,
+        _passwordController.text);
+
+    int status = await UserRepositoryImpl().addUser(user);
+    _showMessage(status);
+  }
+
+  _showMessage(int status) {
+    if (status > 0) {
+      MotionToast.success(
+        description: const Text('Student added successfully'),
+      ).show(context);
+    } else {
+      MotionToast.error(
+        description: const Text('Error in added user'),
+      ).show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       TextFormField(
+                        controller: _usernameController,
                         decoration: InputDecoration(
                           hintText: 'Username',
                           border: OutlineInputBorder(
@@ -48,6 +72,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           filled: true,
                           fillColor: Colors.white,
                         ),
+                        validator: ((value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter username';
+                          }
+                          return null;
+                        }),
                       ),
                       const SizedBox(
                         height: 20,
@@ -60,6 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                             hintText: 'Email',
                             border: OutlineInputBorder(
@@ -67,6 +98,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             filled: true,
                             fillColor: Colors.white),
+                        validator: ((value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter email';
+                          }
+                          return null;
+                        }),
                       ),
                       const SizedBox(
                         height: 20,
@@ -79,6 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       TextFormField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                             hintText: 'Password',
                             border: OutlineInputBorder(
@@ -86,31 +124,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             filled: true,
                             fillColor: Colors.white),
+                        validator: ((value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter password';
+                          }
+                          return null;
+                        }),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Confirm Password',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            hintText: 'Confirm Password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white),
-                      ),
+                      // Container(
+                      //   alignment: Alignment.centerLeft,
+                      //   child: const Text(
+                      //     'Confirm Password',
+                      //     style: TextStyle(color: Colors.white),
+                      //   ),
+                      // ),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //       hintText: 'Confirm Password',
+                      //       border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(20),
+                      //       ),
+                      //       filled: true,
+                      //       fillColor: Colors.white),
+                      // ),
                     ],
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {}
+                    _saveUser();
+                  },
                   child: const Text('Register'),
                 ),
                 const SizedBox(
