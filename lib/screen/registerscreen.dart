@@ -12,13 +12,16 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController(text: 'TestUser');
+  final _usernameController = TextEditingController(text: 'testuser');
   final _emailController = TextEditingController(text: 'test@email.com');
   final _passwordController = TextEditingController(text: 'testuser');
 
   _saveUser() async {
-    User user = User(_usernameController.text, _emailController.text,
-        _passwordController.text);
+    User user = User(
+      username: _usernameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
 
     int status = await UserRepositoryImpl().addUser(user);
     _showMessage(status);

@@ -2,11 +2,11 @@ import 'package:blogit/screen/bottom_screen/addblogscreen.dart';
 import 'package:blogit/screen/bottom_screen/homescreen.dart';
 import 'package:blogit/screen/bottom_screen/profilescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  static const String route = "dashboardScreen";
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();

@@ -20,31 +20,37 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 4864315029679156009),
+      id: const IdUid(1, 848992392222310137),
       name: 'User',
-      lastPropertyId: const IdUid(4, 2662304544679078733),
+      lastPropertyId: const IdUid(5, 3137122975856840350),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 6284647740846812401),
+            id: const IdUid(1, 5837313719917898493),
             name: 'userId',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 4274919676197957827),
+            id: const IdUid(2, 8804458719146965185),
             name: 'username',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3234112839873465153),
+            id: const IdUid(3, 1109302534560307962),
             name: 'email',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 2662304544679078733),
+            id: const IdUid(4, 1271036553487715640),
             name: 'password',
             type: 9,
-            flags: 0)
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 3137122975856840350),
+            name: 'usrId',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(1, 1197446575802961777))
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
@@ -70,8 +76,8 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 4864315029679156009),
-      lastIndexId: const IdUid(0, 0),
+      lastEntityId: const IdUid(1, 848992392222310137),
+      lastIndexId: const IdUid(1, 1197446575802961777),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
@@ -92,14 +98,22 @@ ModelDefinition getObjectBoxModel() {
           object.userId = id;
         },
         objectToFB: (User object, fb.Builder fbb) {
-          final usernameOffset = fbb.writeString(object.username);
-          final emailOffset = fbb.writeString(object.email);
-          final passwordOffset = fbb.writeString(object.password);
-          fbb.startTable(5);
+          final usernameOffset = object.username == null
+              ? null
+              : fbb.writeString(object.username!);
+          final emailOffset =
+              object.email == null ? null : fbb.writeString(object.email!);
+          final passwordOffset = object.password == null
+              ? null
+              : fbb.writeString(object.password!);
+          final usrIdOffset =
+              object.usrId == null ? null : fbb.writeString(object.usrId!);
+          fbb.startTable(6);
           fbb.addInt64(0, object.userId);
           fbb.addOffset(1, usernameOffset);
           fbb.addOffset(2, emailOffset);
           fbb.addOffset(3, passwordOffset);
+          fbb.addOffset(4, usrIdOffset);
           fbb.finish(fbb.endTable());
           return object.userId;
         },
@@ -108,12 +122,14 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = User(
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
+              usrId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 12),
+              username: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              email: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              password: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10),
               userId:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
 
@@ -137,4 +153,7 @@ class User_ {
 
   /// see [User.password]
   static final password = QueryStringProperty<User>(_entities[0].properties[3]);
+
+  /// see [User.usrId]
+  static final usrId = QueryStringProperty<User>(_entities[0].properties[4]);
 }

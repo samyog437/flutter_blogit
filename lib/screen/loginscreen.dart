@@ -1,5 +1,7 @@
+import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/model/user.dart';
 import 'package:blogit/repository/user_repository.dart';
+import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 
@@ -12,29 +14,31 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController(text: 'testuser');
+  final _passwordController = TextEditingController(text: 'testuser');
 
   _loginUser() async {
-    User? status = await UserRepositoryImpl()
+    final isLogin = await UserRepositoryImpl()
         .loginUser(_usernameController.text, _passwordController.text);
-    _showMessage(status!.userId);
+    if (isLogin) {
+      _goToAnotherPage();
+    } else {
+      _showMessage();
+    }
   }
 
-  _showMessage(int status) {
-    if (status > 0) {
-      MotionToast.success(
-        description: const Text('Logged in successfully'),
-      ).show(context);
-    } else {
-      MotionToast.success(
-        description: const Text('Error to login'),
-      ).show(context);
-    }
+  _goToAnotherPage() {
+    Navigator.pushNamed(context, DashboardScreen.route);
+  }
+
+  _showMessage() {
+    showSnackbar(context, 'Invalid username or password', Colors.red);
   }
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var isTablet = screenSize.width > 600;
     return Scaffold(
       body: Container(
         color: const Color(0xFFad5389),
@@ -55,7 +59,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     fit: BoxFit.cover,
                   ),
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: isTablet
+                        ? const EdgeInsets.all(40)
+                        : const EdgeInsets.all(20),
                     child: Column(
                       children: [
                         Container(
