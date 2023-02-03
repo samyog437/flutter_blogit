@@ -4,45 +4,82 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:848992392222310137",
-      "lastPropertyId": "5:3137122975856840350",
+      "id": "1:9105634663828243263",
+      "lastPropertyId": "4:6243907382754511156",
+      "name": "Blog",
+      "properties": [
+        {
+          "id": "1:4363130398979636842",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:5916502683238656805",
+          "name": "blogId",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "1:3880146460523201159"
+        },
+        {
+          "id": "3:2023751129000081104",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "4:6243907382754511156",
+          "name": "content",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:5404242064788204015",
+      "lastPropertyId": "5:2298174321435901355",
       "name": "User",
       "properties": [
         {
-          "id": "1:5837313719917898493",
+          "id": "1:1493864074548348214",
           "name": "userId",
           "type": 6,
           "flags": 129
         },
         {
-          "id": "2:8804458719146965185",
+          "id": "2:1756462968822091885",
+          "name": "usrId",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "2:6874142888791140443"
+        },
+        {
+          "id": "3:2558170714004826875",
           "name": "username",
           "type": 9
         },
         {
-          "id": "3:1109302534560307962",
+          "id": "4:737974796184652267",
           "name": "email",
           "type": 9
         },
         {
-          "id": "4:1271036553487715640",
+          "id": "5:2298174321435901355",
           "name": "password",
           "type": 9
-        },
-        {
-          "id": "5:3137122975856840350",
-          "name": "usrId",
-          "type": 9,
-          "flags": 2080,
-          "indexId": "1:1197446575802961777"
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "1:120889184953418855",
+          "name": "blog",
+          "targetId": "1:9105634663828243263"
+        }
+      ]
     }
   ],
-  "lastEntityId": "1:848992392222310137",
-  "lastIndexId": "1:1197446575802961777",
-  "lastRelationId": "0:0",
+  "lastEntityId": "2:5404242064788204015",
+  "lastIndexId": "2:6874142888791140443",
+  "lastRelationId": "1:120889184953418855",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

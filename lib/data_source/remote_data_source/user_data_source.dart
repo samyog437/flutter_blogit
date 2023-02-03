@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blogit/app/constants.dart';
 import 'package:blogit/data_source/remote_data_source/response/login_respinse.dart';
 import 'package:blogit/helper/http_service.dart';
@@ -9,7 +11,7 @@ class UserRemoteDataSource {
 
   Future<int> addUser(User user) async {
     try {
-      FormData formData = FormData.fromMap({
+      Map<String, dynamic> data = ({
         'username': user.username,
         'email': user.email,
         'password': user.password,
@@ -17,7 +19,8 @@ class UserRemoteDataSource {
 
       Response response = await _httpServices.post(
         Constant.userURL,
-        data: formData,
+        data: json.encode(user.toJson()),
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
       if (response.statusCode == 201) {
         return 1;

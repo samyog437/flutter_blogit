@@ -1,3 +1,4 @@
+import 'package:blogit/model/blog.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:objectbox/objectbox.dart';
 
@@ -16,6 +17,8 @@ class User {
   String? username;
   String? email;
   String? password;
+
+  final blog = ToMany<Blog>();
 
   User({
     this.usrId,

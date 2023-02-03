@@ -3,9 +3,12 @@ import 'package:blogit/screen/bottom_screen/addblogscreen.dart';
 import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:blogit/screen/bottom_screen/homescreen.dart';
 import 'package:blogit/screen/bottom_screen/profilescreen.dart';
+import 'package:blogit/screen/google_map/googleMap.dart';
 import 'package:blogit/screen/loginscreen.dart';
 import 'package:blogit/screen/registerscreen.dart';
 import 'package:blogit/screen/splashscreen.dart';
+import 'package:blogit/screen/wearos/wear_dashboard.dart';
+import 'package:blogit/screen/wearos/wear_login.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -20,6 +23,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
+        // '/': (context) => const WearLoginScreen(),
+        // '/': (context) => const GoogleMapScreen(),
+        WearDashboardScreen.route: (context) => const WearDashboardScreen(),
+
         '/loginScreen': (context) => const LoginScreen(),
         '/registerScreen': (context) => const RegisterScreen(),
         DashboardScreen.route: (context) => const DashboardScreen(),
