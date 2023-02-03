@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:blogit/app/constants.dart';
-import 'package:blogit/data_source/remote_data_source/response/login_respinse.dart';
+import 'package:blogit/data_source/remote_data_source/response/login_response.dart';
 import 'package:blogit/helper/http_service.dart';
 import 'package:blogit/model/user.dart';
 import 'package:dio/dio.dart';

@@ -14,7 +14,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController(text: 'testuser');
   final _emailController = TextEditingController(text: 'test@email.com');
-  final _passwordController = TextEditingController(text: 'testuser');
+  final _passwordController = TextEditingController(text: 'password');
 
   _saveUser() async {
     User user = User(

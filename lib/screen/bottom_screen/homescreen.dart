@@ -1,3 +1,5 @@
+import 'package:blogit/model/blog.dart';
+import 'package:blogit/repository/blog_respository.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -8,33 +10,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<Blog>> _blogs;
+
+  @override
+  void initState() {
+    super.initState();
+    _blogs = BlogRepositoryImpl().getAllBlog();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          // Add a container to hold the blog post's title
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: const Text("Blog Title", style: TextStyle(fontSize: 24)),
-          ),
-          // Add an image to display the blog post's cover image
-          Image.network("https://via.placeholder.com/300x200"),
-          // Add a container to hold the blog post's content
-          Container(
-            padding: const EdgeInsets.all(10),
-            child:
-                const Text("Blog Content...", style: TextStyle(fontSize: 18)),
-          ),
-          // Add a button to view more details of the blog post
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to the blog post's details page
-            },
-            child: const Text("View More"),
-          )
-        ],
-      ),
-    );
+        body: FutureBuilder(
+            future: _blogs,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Blog>> snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Blog blog = snapshot.data![index];
+                    return ListTile(
+                      title: Text(blog.title),
+                      subtitle: Text(blog.content),
+                      leading: const Icon(Icons.library_books),
+                      // onTap: () {},
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('An error occurred: ${snapshot.error}'),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
   }
 }
