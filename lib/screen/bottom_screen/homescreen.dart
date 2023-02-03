@@ -30,11 +30,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int index) {
                     Blog blog = snapshot.data![index];
-                    return ListTile(
-                      title: Text(blog.title),
-                      subtitle: Text(blog.content),
-                      leading: const Icon(Icons.library_books),
-                      // onTap: () {},
+                    return Container(
+                      color: Color.fromARGB(255, 221, 221, 221),
+                      padding: const EdgeInsets.all(10),
+                      child: Card(
+                        child: ListTile(
+                          title: Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Text(
+                              blog.title,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          subtitle: Text(blog.content),
+                          leading: const Icon(Icons.library_books),
+                          // onTap: () {},
+                        ),
+                      ),
                     );
                   },
                 );
