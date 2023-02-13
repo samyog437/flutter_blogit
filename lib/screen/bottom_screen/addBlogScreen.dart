@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:blogit/app/snackbar.dart';
+import 'package:blogit/app/user_permission.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,6 +12,16 @@ class AddBlogScreen extends StatefulWidget {
 }
 
 class _AddBlogScreenState extends State<AddBlogScreen> {
+  @override
+  void initState() {
+    _checkUserPermission();
+    super.initState();
+  }
+
+  _checkUserPermission() async {
+    await UserPermission.checkCameraPermission();
+  }
+
   File? _img;
 
   Future _browseImage(ImageSource imageSource) async {
@@ -39,69 +50,110 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(10),
-        child: Form(
-            child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'Add a Blog',
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                errorStyle: const TextStyle(
-                    color: Colors.white, backgroundColor: Colors.red),
-                hintText: 'Title',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Form(
+              child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
                 ),
-                filled: true,
-                fillColor: Colors.white,
+                alignment: Alignment.center,
+                child: _img != null
+                    ? Image.file(
+                        _img!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      )
+                    : const Text(
+                        'No image selected',
+                        textAlign: TextAlign.center,
+                      ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              maxLines: null,
-              decoration: InputDecoration(
-                errorStyle: const TextStyle(
-                    color: Colors.white, backgroundColor: Colors.red),
-                hintText: 'Content',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      _browseImage(ImageSource.camera);
+                    },
+                    icon: const Icon(Icons.camera),
+                    label: const Text('Camera'),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      _browseImage(ImageSource.gallery);
+                    },
+                    icon: const Icon(Icons.image),
+                    label: const Text('Gallery'),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Add a Blog',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  errorStyle: const TextStyle(
+                      color: Colors.white, backgroundColor: Colors.red),
+                  hintText: 'Title',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                filled: true,
-                fillColor: Colors.white,
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFFad5389)),
+              const SizedBox(
+                height: 20,
               ),
-              child: const Text(
-                'Add Blog',
-                style: TextStyle(color: Colors.white),
+              TextFormField(
+                maxLines: null,
+                decoration: InputDecoration(
+                  errorStyle: const TextStyle(
+                      color: Colors.white, backgroundColor: Colors.red),
+                  hintText: 'Content',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
               ),
-            )
-          ],
-        )),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(const Color(0xFFad5389)),
+                ),
+                child: const Text(
+                  'Add Blog',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            ],
+          )),
+        ),
       ),
     );
   }

@@ -28,6 +28,6 @@ void main() {
     await tester.tap(btnLogin);
     await tester.pumpAndSettle(const Duration(seconds: 3));
 
-    expect(find.byKey(const Key('dashboardPage')), findsOneWidget);
+    expect(find.text('Dashboard'), findsOneWidget);
   });
 }
