@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:blogit/model/user.dart';
 import 'package:blogit/repository/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -26,6 +29,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     int status = await UserRepositoryImpl().addUser(user);
     _showMessage(status);
   }
+
+  File? _img;
+
+  Future _browseImage(ImageSource imageSource) async {}
 
   _showMessage(int status) {
     if (status > 0) {

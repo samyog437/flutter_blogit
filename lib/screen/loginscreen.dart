@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _goToAnotherPage() {
+    showSnackbar(context, 'Login Successful', Colors.green);
     Navigator.pushNamed(context, DashboardScreen.route);
   }
 
@@ -72,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         TextFormField(
+                          key: const Key('txtUsername'),
                           controller: _usernameController,
                           decoration: InputDecoration(
                             errorStyle: const TextStyle(
@@ -102,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         TextFormField(
+                          key: const Key('txtPassword'),
                           controller: _passwordController,
                           decoration: InputDecoration(
                               errorStyle: const TextStyle(
@@ -137,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 250,
                     height: 50,
                     child: ElevatedButton(
+                      key: const ValueKey('btnLogin'),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {}
                         _loginUser();

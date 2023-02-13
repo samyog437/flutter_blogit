@@ -12,6 +12,7 @@ void main() {
         await UserRemoteDataSource().loginUser(username, password);
     expect(actualResult, expectedResult);
   });
+  
   test('User should be registered', () async {
     int expectedResult = 1;
     User user = User(

@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color.fromARGB(255, 221, 221, 221),
+        color: Color.fromARGB(255, 238, 238, 238),
         child: FutureBuilder(
           future: _blogs,
           builder: (BuildContext context, AsyncSnapshot<List<Blog>> snapshot) {
