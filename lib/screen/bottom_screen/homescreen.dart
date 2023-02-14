@@ -1,5 +1,6 @@
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/repository/blog_respository.dart';
+import 'package:blogit/screen/blogdetail.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -57,6 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: ListTile(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, BlogDetailScreen.route,
+                                      arguments: blog);
+                                },
                                 title: Padding(
                                   padding: const EdgeInsets.only(bottom: 15),
                                   child: Text(

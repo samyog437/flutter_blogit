@@ -1,4 +1,5 @@
 import 'package:blogit/app/theme_data.dart';
+import 'package:blogit/screen/blogdetail.dart';
 import 'package:blogit/screen/bottom_screen/addblogscreen.dart';
 import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:blogit/screen/bottom_screen/homescreen.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/loginScreen': (context) => const LoginScreen(),
         '/registerScreen': (context) => const RegisterScreen(),
         DashboardScreen.route: (context) => const DashboardScreen(),
+        BlogDetailScreen.route: (context) => const BlogDetailScreen(),
         '/homeScreen': (context) => const HomeScreen(),
         '/addBlogScreen': (context) => const AddBlogScreen(),
         '/profileScreen': (context) => const ProfileScreen(),

@@ -29,4 +29,25 @@ class BlogRemoteDataSource {
       throw Exception('Failed to load Blog');
     }
   }
+
+  Future<Blog?> getABlog(int id) async {
+    try {
+      Response response = await _httpServices.get(
+        '${Constant.blogURL}/$id',
+      );
+      print("API endpoint: ${Constant.blogURL}/$id");
+      print("Status code: ${response.statusCode}");
+      print("Response data: ${response.data}");
+      if (response.statusCode == 200) {
+        Map<String, dynamic> blogJson = response.data;
+        Blog blog = Blog.fromJson(blogJson);
+        return blog;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load a Blog');
+    }
+  }
 }
