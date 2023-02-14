@@ -27,44 +27,59 @@ class _HomeScreenState extends State<HomeScreen> {
           future: _blogs,
           builder: (BuildContext context, AsyncSnapshot<List<Blog>> snapshot) {
             if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Blog blog = snapshot.data![index];
+              return LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  double cardWidth =
+                      constraints.maxWidth < 750 ? constraints.maxWidth : 750;
+                  double titleFontSize = constraints.maxWidth < 600 ? 20 : 28;
+                  double contentFontSize = constraints.maxWidth < 600 ? 16 : 22;
 
-                  int wordCount = 20;
-                  List<String> words = blog.content.split(" ");
-                  String limitedContent = words.take(wordCount).join(" ");
-                  if (words.length > wordCount) {
-                    limitedContent += "...";
-                  }
+                  return Center(
+                    child: SizedBox(
+                      width: cardWidth,
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Blog blog = snapshot.data![index];
 
-                  return Container(
-                    padding: const EdgeInsets.all(10),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: Text(
-                            blog.title,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                          int wordCount = 20;
+                          List<String> words = blog.content.split(" ");
+                          String limitedContent =
+                              words.take(wordCount).join(" ");
+                          if (words.length > wordCount) {
+                            limitedContent += "...";
+                          }
+
+                          return Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                title: Padding(
+                                  padding: const EdgeInsets.only(bottom: 15),
+                                  child: Text(
+                                    blog.title,
+                                    style: TextStyle(
+                                      fontSize: titleFontSize,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  limitedContent,
+                                  style: TextStyle(fontSize: contentFontSize),
+                                ),
+                                leading: Icon(
+                                  Icons.library_books,
+                                  size: constraints.maxWidth < 600 ? 30 : 40,
+                                ),
+                                // onTap: () {},
+                              ),
                             ),
-                          ),
-                        ),
-                        subtitle: Text(
-                          limitedContent,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        leading: const Icon(
-                          Icons.library_books,
-                          size: 30,
-                        ),
-                        // onTap: () {},
+                          );
+                        },
                       ),
                     ),
                   );
