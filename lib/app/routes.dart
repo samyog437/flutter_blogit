@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       theme: getApplicationTheme(),
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashScreen(),
-        // '/': (context) => const WearLoginScreen(),
+        // '/': (context) => const SplashScreen(),
+        '/': (context) => const WearLoginScreen(),
         // '/': (context) => const GoogleMapScreen(),
         WearDashboardScreen.route: (context) => const WearDashboardScreen(),
 

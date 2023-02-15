@@ -15,8 +15,8 @@ class WearLoginScreen extends StatefulWidget {
 
 class _WearLoginScreenState extends State<WearLoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController(text: 'testuser');
+  final _passwordController = TextEditingController(text: 'password');
 
   _loginUser() async {
     final islogin = await UserRepositoryImpl()
@@ -48,45 +48,78 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
               // ),
               body: SingleChildScrollView(
                 child: Container(
+                  color: const Color(0xFFad5389),
                   padding: const EdgeInsets.all(5),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _usernameController,
-                          decoration: const InputDecoration(
-                            labelText: 'Username',
-                          ),
-                          validator: ((value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter username';
-                            }
-                            return null;
-                          }),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Login',
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: _usernameController,
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
+                                labelStyle: TextStyle(
+                                    fontSize: 12, color: Colors.white),
+                              ),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                              validator: ((value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter username';
+                                }
+                                return null;
+                              }),
+                            ),
+                            TextFormField(
+                              controller: _passwordController,
+                              decoration: const InputDecoration(
+                                labelText: 'Password',
+                                labelStyle: TextStyle(
+                                    fontSize: 12, color: Colors.white),
+                              ),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                              validator: ((value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                return null;
+                              }),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: SizedBox(
+                                width: 100,
+                                height: 30,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      _loginUser();
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Login',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        TextFormField(
-                          controller: _passwordController,
-                          decoration: const InputDecoration(
-                            labelText: 'Password',
-                          ),
-                          validator: ((value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter password';
-                            }
-                            return null;
-                          }),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _loginUser();
-                            }
-                          },
-                          child: const Text('Login'),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
