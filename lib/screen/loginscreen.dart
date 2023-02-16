@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/model/user.dart';
 import 'package:blogit/repository/user_repository.dart';
@@ -13,19 +14,67 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  _checkNotificationEnabled() {
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController(text: 'testuser');
   final _passwordController = TextEditingController(text: 'password');
+
+  @override
+  void initState() {
+    _checkNotificationEnabled();
+    super.initState();
+    _initializeNotifications();
+  }
+
+  _initializeNotifications() async {
+    AwesomeNotifications().initialize(null, [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic Notifications',
+        channelDescription: 'Notification for basic use',
+        defaultColor: const Color(0xFFad5389),
+        importance: NotificationImportance.Max,
+        ledColor: Colors.green,
+        channelShowBadge: true,
+      ),
+    ]);
+  }
 
   _loginUser() async {
     final isLogin = await UserRepositoryImpl()
         .loginUser(_usernameController.text, _passwordController.text);
     if (isLogin) {
+      final username = _usernameController.text;
       _goToAnotherPage();
+      _showNotification(username);
     } else {
       _showMessage();
     }
   }
+
+//   AwesomeNotifications().createNotification(
+//   content: NotificationContent(
+//     id: 1,
+//     channelKey: 'basic_channel',
+//     title: 'Welcome ${user.name}!',
+//     body: 'You have logged in successfully.',
+//     largeIcon: user.photoURL,
+//   ),
+//   actionButtons: [
+//     NotificationActionButton(
+//       key: 'LOGOUT',
+//       label: 'Logout',
+//       autoCancel: true,
+//     ),
+//   ],
+// );
 
   _goToAnotherPage() {
     showSnackbar(context, 'Login Successful', Colors.green);
@@ -34,6 +83,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _showMessage() {
     showSnackbar(context, 'Invalid username or password', Colors.red);
+  }
+
+  _showNotification(String username) {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: 1,
+          channelKey: 'basic_channel',
+          title: 'Login Successful',
+          body: '$username has logged in'),
+    );
   }
 
   @override

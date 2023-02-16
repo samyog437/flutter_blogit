@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/repository/user_repository.dart';
 import 'package:blogit/screen/wearos/wear_dashboard.dart';
@@ -14,15 +15,46 @@ class WearLoginScreen extends StatefulWidget {
 }
 
 class _WearLoginScreenState extends State<WearLoginScreen> {
+  _checkNotificationEnabled() {
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+  }
+
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController(text: 'testuser');
   final _passwordController = TextEditingController(text: 'password');
+
+  @override
+  void initState() {
+    _checkNotificationEnabled();
+    super.initState();
+    _initializeNotifications();
+  }
+
+  _initializeNotifications() async {
+    AwesomeNotifications().initialize(null, [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic Notifications',
+        channelDescription: 'Notification for basic use',
+        defaultColor: const Color(0xFFad5389),
+        importance: NotificationImportance.Max,
+        ledColor: Colors.green,
+        channelShowBadge: true,
+      ),
+    ]);
+  }
 
   _loginUser() async {
     final islogin = await UserRepositoryImpl()
         .loginUser(_usernameController.text, _passwordController.text);
     if (islogin) {
+      final username = _usernameController.text;
       _goToAnotherPage();
+      _showNotification(username);
     } else {
       _showMessage();
     }
@@ -34,6 +66,16 @@ class _WearLoginScreenState extends State<WearLoginScreen> {
 
   _showMessage() {
     showSnackbar(context, 'Invalid username or password', Colors.red);
+  }
+
+  _showNotification(String username) async {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: 1,
+          channelKey: 'basic_channel',
+          title: 'Login Successful',
+          body: '$username has logged in'),
+    );
   }
 
   @override
