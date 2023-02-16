@@ -27,12 +27,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     int status = await UserRepositoryImpl().addUser(user);
+    _goToAnotherPage();
     _showMessage(status);
   }
 
-  File? _img;
-
-  Future _browseImage(ImageSource imageSource) async {}
+  _goToAnotherPage() {
+    Navigator.pushNamed(context, '/loginScreen');
+  }
 
   _showMessage(int status) {
     if (status > 0) {
@@ -76,6 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       TextFormField(
+                        key: const Key('txtUsername'),
                         controller: _usernameController,
                         decoration: InputDecoration(
                           hintText: 'Username',
@@ -103,6 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       TextFormField(
+                        key: const Key('txtEmail'),
                         controller: _emailController,
                         decoration: InputDecoration(
                             hintText: 'Email',
@@ -129,6 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       TextFormField(
+                        key: const Key('txtPassword'),
                         controller: _passwordController,
                         decoration: InputDecoration(
                             hintText: 'Password',
@@ -167,6 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 ElevatedButton(
+                  key: const ValueKey('btnRegister'),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {}
                     _saveUser();
@@ -184,6 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 20,
                 ),
                 ElevatedButton(
+                  key: const ValueKey('btnGoToLogin'),
                   onPressed: () {
                     Navigator.pushNamed(context, '/loginScreen');
                   },

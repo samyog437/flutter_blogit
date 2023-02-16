@@ -221,6 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 250,
                     height: 50,
                     child: ElevatedButton(
+                      key: const ValueKey('btnGoToRegister'),
                       onPressed: () {
                         Navigator.pushNamed(context, '/registerScreen');
                       },
