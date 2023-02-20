@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
           id: 1,
           channelKey: 'basic_channel',
           title: 'Login Successful',
-          body: '$username has logged in'),
+          body: 'Login Successful'),
     );
   }
 

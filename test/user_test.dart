@@ -2,8 +2,6 @@ import 'package:blogit/data_source/remote_data_source/blog_data_source.dart';
 import 'package:blogit/data_source/remote_data_source/user_data_source.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/model/user.dart';
-import 'package:blogit/repository/blog_respository.dart';
-import 'package:blogit/repository/user_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -17,8 +15,28 @@ void main() {
       expect(actualResult, expectedResult);
     });
 
+    test('User should not be able to login', () async {
+      bool expectedResult = false;
+      String username = "testuserasdas";
+      String password = "passwordasds";
+      bool actualResult =
+          await UserRemoteDataSource().loginUser(username, password);
+      expect(actualResult, expectedResult);
+    });
+
     test('User should be registered', () async {
       int expectedResult = 1;
+      User user = User(
+        username: "testuser7",
+        email: "test7@email.com",
+        password: "password",
+      );
+      int actualResult = await UserRemoteDataSource().addUser(user);
+      expect(actualResult, expectedResult);
+    });
+
+    test('User should not be registered', () async {
+      int expectedResult = 0;
       User user = User(
         username: "testuser3",
         email: "test3@email.com",
@@ -35,5 +53,7 @@ void main() {
       final actualResult = await BlogRemoteDataSource().getAllBlog();
       expect(actualResult, expectedResult);
     });
+
+    test('Should Navigate to AddBlog', () async {});
   });
 }

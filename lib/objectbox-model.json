@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:9105634663828243263",
-      "lastPropertyId": "4:6243907382754511156",
+      "lastPropertyId": "5:1441746342394973976",
       "name": "Blog",
       "properties": [
         {
@@ -30,6 +30,11 @@
           "id": "4:6243907382754511156",
           "name": "content",
           "type": 9
+        },
+        {
+          "id": "5:1441746342394973976",
+          "name": "view",
+          "type": 6
         }
       ],
       "relations": []

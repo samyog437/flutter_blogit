@@ -81,6 +81,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Icons.library_books,
                                   size: constraints.maxWidth < 600 ? 30 : 40,
                                 ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.visibility),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '${blog.view.toString()} views',
+                                    ),
+                                  ],
+                                ),
                                 // onTap: () {},
                               ),
                             ),
