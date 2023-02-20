@@ -28,15 +28,36 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
+                const SizedBox(
+                  height: 15,
+                ),
                 TextField(
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search blogs...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: 'Search blogs...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16)),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      key: const Key('ltstBtn'),
+                      onPressed: () {},
+                      child: const Text('Latest'),
+                    ),
+                    TextButton(
+                        key: const Key('mstPoplr'),
+                        onPressed: () {},
+                        child: const Text('Most Popular'))
+                  ],
+                )
               ],
             ),
           ),

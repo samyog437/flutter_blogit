@@ -23,6 +23,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final blog = ModalRoute.of(context)!.settings.arguments as Blog;
     return Scaffold(
       appBar: AppBar(
         title: Text(blog.title),
