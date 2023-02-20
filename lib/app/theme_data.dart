@@ -16,6 +16,14 @@ ThemeData getApplicationTheme() {
         ),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+          textStyle: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          foregroundColor: Colors.black),
+    ),
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       color: Color(0xFFad5389),
