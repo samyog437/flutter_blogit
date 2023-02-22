@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/app/user_permission.dart';
+import 'package:blogit/model/blog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -12,6 +13,9 @@ class AddBlogScreen extends StatefulWidget {
 }
 
 class _AddBlogScreenState extends State<AddBlogScreen> {
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
+
   @override
   void initState() {
     _checkUserPermission();
@@ -110,6 +114,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
                 height: 20,
               ),
               TextFormField(
+                controller: _titleController,
                 decoration: InputDecoration(
                   errorStyle: const TextStyle(
                       color: Colors.white, backgroundColor: Colors.red),
@@ -125,6 +130,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
                 height: 20,
               ),
               TextFormField(
+                controller: _contentController,
                 maxLines: null,
                 decoration: InputDecoration(
                   errorStyle: const TextStyle(

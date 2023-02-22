@@ -1,3 +1,4 @@
+import 'package:blogit/app/constants.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -34,6 +35,11 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Image.network(
+                      Constant.blogImageURL + blog.image,
+                    )),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
