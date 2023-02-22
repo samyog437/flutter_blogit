@@ -23,7 +23,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 9105634663828243263),
       name: 'Blog',
-      lastPropertyId: const IdUid(5, 1441746342394973976),
+      lastPropertyId: const IdUid(6, 7948047776063199672),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -51,6 +51,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(5, 1441746342394973976),
             name: 'view',
             type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 7948047776063199672),
+            name: 'image',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -145,12 +150,14 @@ ModelDefinition getObjectBoxModel() {
           final blogIdOffset = fbb.writeString(object.blogId);
           final titleOffset = fbb.writeString(object.title);
           final contentOffset = fbb.writeString(object.content);
-          fbb.startTable(6);
+          final imageOffset = fbb.writeString(object.image);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, blogIdOffset);
           fbb.addOffset(2, titleOffset);
           fbb.addOffset(3, contentOffset);
           fbb.addInt64(4, object.view);
+          fbb.addOffset(5, imageOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -161,6 +168,8 @@ ModelDefinition getObjectBoxModel() {
           final object = Blog(
               const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
               const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               const fb.StringReader(asciiOptimization: true)
@@ -240,6 +249,9 @@ class Blog_ {
 
   /// see [Blog.view]
   static final view = QueryIntegerProperty<Blog>(_entities[0].properties[4]);
+
+  /// see [Blog.image]
+  static final image = QueryStringProperty<Blog>(_entities[0].properties[5]);
 }
 
 /// [User] entity fields to define ObjectBox queries.
