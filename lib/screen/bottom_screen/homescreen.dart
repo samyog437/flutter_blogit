@@ -103,10 +103,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: ListTile(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, BlogDetailScreen.route,
-                                            arguments: blog);
+                                      onTap: () async {
+                                        Blog? blog = await BlogRepositoryImpl()
+                                            .getABlog(
+                                                snapshot.data![index].blogId);
+                                        if (blog != null) {
+                                          Future.microtask(() {
+                                            Navigator.pushNamed(
+                                                context, BlogDetailScreen.route,
+                                                arguments: blog);
+                                          });
+                                        }
                                       },
                                       title: Padding(
                                         padding:

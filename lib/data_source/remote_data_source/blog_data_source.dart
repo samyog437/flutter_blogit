@@ -3,6 +3,7 @@ import 'package:blogit/data_source/remote_data_source/response/blog_response.dar
 import 'package:blogit/helper/http_service.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class BlogRemoteDataSource {
   final Dio _httpServices = HttpServices().getDioInstance();
@@ -18,6 +19,7 @@ class BlogRemoteDataSource {
       if (response.statusCode == 200) {
         List<dynamic> blogsJson = response.data;
         // BlogResponse blogResponse = BlogResponse.fromJson(response.data);
+
         List<Blog> blogs =
             blogsJson.map((blogsJson) => Blog.fromJson(blogsJson)).toList();
         return blogs;
@@ -30,7 +32,7 @@ class BlogRemoteDataSource {
     }
   }
 
-  Future<Blog?> getABlog(int id) async {
+  Future<Blog?> getABlog(String id) async {
     try {
       Response response = await _httpServices.get(
         '${Constant.blogURL}/$id',
