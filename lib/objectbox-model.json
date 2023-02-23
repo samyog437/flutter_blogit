@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:9105634663828243263",
-      "lastPropertyId": "6:7948047776063199672",
+      "lastPropertyId": "8:8557084770714597963",
       "name": "Blog",
       "properties": [
         {
@@ -95,7 +95,10 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    5212515780373810553,
+    8557084770714597963
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

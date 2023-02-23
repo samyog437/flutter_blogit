@@ -1,5 +1,7 @@
 import 'package:blogit/app/constants.dart';
 import 'package:blogit/model/blog.dart';
+import 'package:blogit/model/user.dart';
+import 'package:blogit/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -49,6 +51,17 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                 ),
                 const SizedBox(
                   height: 30,
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    blog.users?.username ?? 'Unknown',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,

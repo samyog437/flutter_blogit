@@ -18,6 +18,9 @@ class User {
   String? email;
   String? password;
 
+  @JsonKey(name: 'blog')
+  Blog? blogs;
+
   final blog = ToMany<Blog>();
 
   User({
@@ -25,6 +28,7 @@ class User {
     this.username,
     this.email,
     this.password,
+    this.blogs,
     this.userId = 0,
   });
 

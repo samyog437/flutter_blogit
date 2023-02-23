@@ -22,6 +22,9 @@ class Blog {
   String? content;
   int? view;
 
+  @JsonKey(name: 'user')
+  User? users;
+
   @Backlink()
   final user = ToMany<User>();
 
@@ -31,6 +34,7 @@ class Blog {
       this.title,
       this.content,
       this.view,
+      this.users,
       this.id = 0});
 
   factory Blog.fromJson(Map<String, dynamic> json) => _$BlogFromJson(json);

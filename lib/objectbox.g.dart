@@ -23,7 +23,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 9105634663828243263),
       name: 'Blog',
-      lastPropertyId: const IdUid(6, 7948047776063199672),
+      lastPropertyId: const IdUid(8, 8557084770714597963),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -130,7 +130,7 @@ ModelDefinition getObjectBoxModel() {
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [5212515780373810553, 8557084770714597963],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -155,7 +155,7 @@ ModelDefinition getObjectBoxModel() {
               object.content == null ? null : fbb.writeString(object.content!);
           final imageOffset =
               object.image == null ? null : fbb.writeString(object.image!);
-          fbb.startTable(7);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, blogIdOffset);
           fbb.addOffset(2, titleOffset);

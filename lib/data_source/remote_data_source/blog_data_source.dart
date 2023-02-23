@@ -47,6 +47,8 @@ class BlogRemoteDataSource {
       if (response.statusCode == 200) {
         Map<String, dynamic> blogJson = response.data;
         Blog blog = Blog.fromJson(blogJson);
+        print("Blog user: ${blog.user}");
+
         return blog;
       } else {
         return null;
