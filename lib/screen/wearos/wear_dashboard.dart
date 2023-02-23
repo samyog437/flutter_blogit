@@ -61,7 +61,7 @@ class _WearDashboardScreenState extends State<WearDashboardScreen> {
 
                                     int wordCount = 20;
                                     List<String> words =
-                                        blog.content.split(" ");
+                                        blog.content!.split(" ");
                                     String limitedContent =
                                         words.take(wordCount).join(" ");
                                     if (words.length > wordCount) {
@@ -86,7 +86,7 @@ class _WearDashboardScreenState extends State<WearDashboardScreen> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 15),
                                             child: Text(
-                                              blog.title,
+                                              blog.title!,
                                               style: const TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.bold,

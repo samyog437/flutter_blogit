@@ -147,10 +147,14 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Blog object, fb.Builder fbb) {
-          final blogIdOffset = fbb.writeString(object.blogId);
-          final titleOffset = fbb.writeString(object.title);
-          final contentOffset = fbb.writeString(object.content);
-          final imageOffset = fbb.writeString(object.image);
+          final blogIdOffset =
+              object.blogId == null ? null : fbb.writeString(object.blogId!);
+          final titleOffset =
+              object.title == null ? null : fbb.writeString(object.title!);
+          final contentOffset =
+              object.content == null ? null : fbb.writeString(object.content!);
+          final imageOffset =
+              object.image == null ? null : fbb.writeString(object.image!);
           fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, blogIdOffset);
@@ -166,15 +170,16 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = Blog(
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 14, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              blogId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              image: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 14),
+              title: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              content: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              view: const fb.Int64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 12),
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
           InternalToManyAccess.setRelInfo(object.user, store,
               RelInfo<User>.toManyBacklink(1, object.id), store.box<Blog>());

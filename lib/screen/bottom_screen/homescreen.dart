@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Blog blog = snapshot.data![index];
 
                                 int wordCount = 20;
-                                List<String> words = blog.content.split(" ");
+                                List<String> words = blog.content!.split(" ");
                                 String limitedContent =
                                     words.take(wordCount).join(" ");
                                 if (words.length > wordCount) {
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding:
                                             const EdgeInsets.only(bottom: 15),
                                         child: Text(
-                                          blog.title,
+                                          blog.title!,
                                           style: TextStyle(
                                             fontSize: titleFontSize,
                                             // fontWeight: FontWeight.bold,

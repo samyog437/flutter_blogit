@@ -27,7 +27,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
     // blog.view++;
     return Scaffold(
       appBar: AppBar(
-        title: Text(blog.title),
+        title: Text(blog.title!),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -38,12 +38,12 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                 Align(
                     alignment: Alignment.topLeft,
                     child: Image.network(
-                      Constant.blogImageURL + blog.image,
+                      Constant.blogImageURL + blog.image!,
                     )),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    blog.title,
+                    blog.title!,
                     style: const TextStyle(fontSize: 30),
                   ),
                 ),
@@ -53,7 +53,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    blog.content,
+                    blog.content!,
                     style: const TextStyle(fontSize: 18),
                   ),
                 ),

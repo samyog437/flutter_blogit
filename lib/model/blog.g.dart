@@ -7,11 +7,11 @@ part of 'blog.dart';
 // **************************************************************************
 
 Blog _$BlogFromJson(Map<String, dynamic> json) => Blog(
-      json['_id'] as String,
-      json['image'] as String,
-      json['title'] as String,
-      json['content'] as String,
-      json['view'] as int,
+      blogId: json['_id'] as String?,
+      image: json['image'] as String?,
+      title: json['title'] as String?,
+      content: json['content'] as String?,
+      view: json['view'] as int?,
       id: json['id'] as int? ?? 0,
     );
 
