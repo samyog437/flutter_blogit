@@ -75,6 +75,8 @@ class BlogRemoteDataSource {
         'content': blog.content,
       });
 
+      _httpServices.options.headers["Authorization"] = Constant.token;
+
       Response response = await _httpServices.post(
         Constant.blogURL,
         data: formData,

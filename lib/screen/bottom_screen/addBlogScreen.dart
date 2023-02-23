@@ -161,7 +161,11 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _addBlog();
+                      }
+                    },
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(const Color(0xFFad5389)),

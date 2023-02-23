@@ -15,6 +15,7 @@ class HttpServices {
     'content-type': 'application/json',
     'accept': 'application/json',
     'language': 'en',
+    'Authorization': 'Bearer ${Constant.token}',
   };
 
   Dio getDioInstance() {
