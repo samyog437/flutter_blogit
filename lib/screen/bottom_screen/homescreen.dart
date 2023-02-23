@@ -13,6 +13,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Blog>> _blogs;
 
+  final _searchController = TextEditingController();
+  String _searchText = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,14 +41,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 15,
                 ),
                 TextField(
+                  controller: _searchController,
                   decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      hintText: 'Search blogs...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16)),
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: 'Search blogs...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 16),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _searchText = value;
+                    });
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -62,31 +78,33 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Expanded(
-            child: Container(
-              child: FutureBuilder(
-                future: _blogs,
-                builder:
-                    (BuildContext context, AsyncSnapshot<List<Blog>> snapshot) {
-                  if (snapshot.hasData) {
-                    return LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        double cardWidth = constraints.maxWidth < 750
-                            ? constraints.maxWidth
-                            : 750;
-                        double titleFontSize =
-                            constraints.maxWidth < 600 ? 20 : 28;
-                        double contentFontSize =
-                            constraints.maxWidth < 600 ? 16 : 22;
+            child: FutureBuilder(
+              future: _blogs,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Blog>> snapshot) {
+                if (snapshot.hasData) {
+                  return LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      double cardWidth = constraints.maxWidth < 750
+                          ? constraints.maxWidth
+                          : 750;
+                      double titleFontSize =
+                          constraints.maxWidth < 600 ? 20 : 28;
+                      double contentFontSize =
+                          constraints.maxWidth < 600 ? 16 : 22;
 
-                        return Center(
-                          child: SizedBox(
-                            width: cardWidth,
-                            child: ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Blog blog = snapshot.data![index];
-
+                      return Center(
+                        child: SizedBox(
+                          width: cardWidth,
+                          child: ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Blog blog = snapshot.data![index];
+                              if (_searchText.isEmpty ||
+                                  blog.title!
+                                      .toLowerCase()
+                                      .contains(_searchText.toLowerCase())) {
                                 int wordCount = 20;
                                 List<String> words = blog.content!.split(" ");
                                 String limitedContent =
@@ -153,23 +171,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 );
-                              },
-                            ),
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            },
                           ),
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text('An error occurred: ${snapshot.error}'),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+                        ),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('An error occurred: ${snapshot.error}'),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
         ],
