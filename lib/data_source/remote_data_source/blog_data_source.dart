@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:blogit/app/constants.dart';
@@ -12,20 +13,49 @@ import 'package:mime/mime.dart';
 class BlogRemoteDataSource {
   final Dio _httpServices = HttpServices().getDioInstance();
 
+  // Future<List<Blog>> getAllBlog() async {
+  //   try {
+  //     Response response = await _httpServices.get(
+  //       Constant.blogURL,
+  //     );
+  //     print("API endpoint: ${Constant.blogURL}");
+  //     print("Status code: ${response.statusCode}");
+  //     print("Response data: ${response.data.runtimeType}: ${response.data}");
+  //     if (response.statusCode == 200) {
+  //       print("before blogsJson");
+
+  //       List<dynamic> blogsJson = json.decode('${response.data}');
+  //       print("blogsJson: $blogsJson");
+  //       // BlogResponse blogResponse = BlogResponse.fromJson(response.data);
+
+  //       List<Blog> blogs =
+  //           blogsJson.map((blogsJson) => Blog.fromJson(blogsJson)).toList();
+
+  //       return blogs;
+  //     } else {
+  //       return [];
+  //     }
+  //   } catch (e) {
+  //     print("Error: $e");
+  //     throw Exception('Failed to load Blog');
+  //   }
+  // }
+
   Future<List<Blog>> getAllBlog() async {
     try {
-      Response response = await _httpServices.get(
-        Constant.blogURL,
-      );
+      final response = await _httpServices.get(Constant.blogURL);
       print("API endpoint: ${Constant.blogURL}");
       print("Status code: ${response.statusCode}");
       print("Response data: ${response.data}");
-      if (response.statusCode == 200) {
-        List<dynamic> blogsJson = response.data;
-        // BlogResponse blogResponse = BlogResponse.fromJson(response.data);
 
-        List<Blog> blogs =
-            blogsJson.map((blogsJson) => Blog.fromJson(blogsJson)).toList();
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> blogDataList =
+            List<Map<String, dynamic>>.from(response.data);
+
+        print("blogDataList: $blogDataList");
+
+        final List<Blog> blogs =
+            blogDataList.map((blogData) => Blog.fromJson(blogData)).toList();
         return blogs;
       } else {
         return [];

@@ -25,8 +25,7 @@ class Blog {
   @JsonKey(name: 'user')
   User? users;
 
-  @Backlink()
-  final user = ToMany<User>();
+  final user = ToOne<User>();
 
   Blog(
       {this.blogId,

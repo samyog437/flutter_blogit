@@ -23,7 +23,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 9105634663828243263),
       name: 'Blog',
-      lastPropertyId: const IdUid(8, 8557084770714597963),
+      lastPropertyId: const IdUid(18, 3489685724960804401),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -31,12 +31,6 @@ final _entities = <ModelEntity>[
             name: 'id',
             type: 6,
             flags: 129),
-        ModelProperty(
-            id: const IdUid(2, 5916502683238656805),
-            name: 'blogId',
-            type: 9,
-            flags: 2080,
-            indexId: const IdUid(1, 3880146460523201159)),
         ModelProperty(
             id: const IdUid(3, 2023751129000081104),
             name: 'title',
@@ -56,12 +50,23 @@ final _entities = <ModelEntity>[
             id: const IdUid(6, 7948047776063199672),
             name: 'image',
             type: 9,
-            flags: 0)
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(16, 3591448375739380817),
+            name: 'blogId',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(3, 42154418459061028)),
+        ModelProperty(
+            id: const IdUid(18, 3489685724960804401),
+            name: 'userId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(4, 4323185171255159374),
+            relationTarget: 'User')
       ],
       relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[
-        ModelBacklink(name: 'user', srcEntity: 'User', srcField: '')
-      ]),
+      backlinks: <ModelBacklink>[]),
   ModelEntity(
       id: const IdUid(2, 5404242064788204015),
       name: 'User',
@@ -95,12 +100,7 @@ final _entities = <ModelEntity>[
             type: 9,
             flags: 0)
       ],
-      relations: <ModelRelation>[
-        ModelRelation(
-            id: const IdUid(1, 120889184953418855),
-            name: 'blog',
-            targetId: const IdUid(1, 9105634663828243263))
-      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -125,13 +125,25 @@ ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
       lastEntityId: const IdUid(2, 5404242064788204015),
-      lastIndexId: const IdUid(2, 6874142888791140443),
-      lastRelationId: const IdUid(1, 120889184953418855),
+      lastIndexId: const IdUid(4, 4323185171255159374),
+      lastRelationId: const IdUid(2, 6512603844235776691),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
-      retiredIndexUids: const [],
-      retiredPropertyUids: const [5212515780373810553, 8557084770714597963],
-      retiredRelationUids: const [],
+      retiredIndexUids: const [3880146460523201159],
+      retiredPropertyUids: const [
+        5212515780373810553,
+        8557084770714597963,
+        4618012678498046976,
+        6712982619197074531,
+        2444926203381742803,
+        1978042752923607483,
+        3799881457468526250,
+        3100897669074555906,
+        9005910269781168528,
+        5916502683238656805,
+        7360545069101046422
+      ],
+      retiredRelationUids: const [120889184953418855, 6512603844235776691],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
@@ -139,29 +151,29 @@ ModelDefinition getObjectBoxModel() {
   final bindings = <Type, EntityDefinition>{
     Blog: EntityDefinition<Blog>(
         model: _entities[0],
-        toOneRelations: (Blog object) => [],
-        toManyRelations: (Blog object) =>
-            {RelInfo<User>.toManyBacklink(1, object.id): object.user},
+        toOneRelations: (Blog object) => [object.user],
+        toManyRelations: (Blog object) => {},
         getId: (Blog object) => object.id,
         setId: (Blog object, int id) {
           object.id = id;
         },
         objectToFB: (Blog object, fb.Builder fbb) {
-          final blogIdOffset =
-              object.blogId == null ? null : fbb.writeString(object.blogId!);
           final titleOffset =
               object.title == null ? null : fbb.writeString(object.title!);
           final contentOffset =
               object.content == null ? null : fbb.writeString(object.content!);
           final imageOffset =
               object.image == null ? null : fbb.writeString(object.image!);
-          fbb.startTable(9);
+          final blogIdOffset =
+              object.blogId == null ? null : fbb.writeString(object.blogId!);
+          fbb.startTable(19);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, blogIdOffset);
           fbb.addOffset(2, titleOffset);
           fbb.addOffset(3, contentOffset);
           fbb.addInt64(4, object.view);
           fbb.addOffset(5, imageOffset);
+          fbb.addOffset(15, blogIdOffset);
+          fbb.addInt64(17, object.user.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -171,7 +183,7 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Blog(
               blogId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 6),
+                  .vTableGetNullable(buffer, rootOffset, 34),
               image: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 14),
               title: const fb.StringReader(asciiOptimization: true)
@@ -181,15 +193,15 @@ ModelDefinition getObjectBoxModel() {
               view: const fb.Int64Reader()
                   .vTableGetNullable(buffer, rootOffset, 12),
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
-          InternalToManyAccess.setRelInfo(object.user, store,
-              RelInfo<User>.toManyBacklink(1, object.id), store.box<Blog>());
+          object.user.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 38, 0);
+          object.user.attach(store);
           return object;
         }),
     User: EntityDefinition<User>(
         model: _entities[1],
         toOneRelations: (User object) => [],
-        toManyRelations: (User object) =>
-            {RelInfo<User>.toMany(1, object.userId): object.blog},
+        toManyRelations: (User object) => {},
         getId: (User object) => object.userId,
         setId: (User object, int id) {
           object.userId = id;
@@ -229,8 +241,7 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 12),
               userId:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
-          InternalToManyAccess.setRelInfo(object.blog, store,
-              RelInfo<User>.toMany(1, object.userId), store.box<User>());
+
           return object;
         })
   };
@@ -243,20 +254,24 @@ class Blog_ {
   /// see [Blog.id]
   static final id = QueryIntegerProperty<Blog>(_entities[0].properties[0]);
 
-  /// see [Blog.blogId]
-  static final blogId = QueryStringProperty<Blog>(_entities[0].properties[1]);
-
   /// see [Blog.title]
-  static final title = QueryStringProperty<Blog>(_entities[0].properties[2]);
+  static final title = QueryStringProperty<Blog>(_entities[0].properties[1]);
 
   /// see [Blog.content]
-  static final content = QueryStringProperty<Blog>(_entities[0].properties[3]);
+  static final content = QueryStringProperty<Blog>(_entities[0].properties[2]);
 
   /// see [Blog.view]
-  static final view = QueryIntegerProperty<Blog>(_entities[0].properties[4]);
+  static final view = QueryIntegerProperty<Blog>(_entities[0].properties[3]);
 
   /// see [Blog.image]
-  static final image = QueryStringProperty<Blog>(_entities[0].properties[5]);
+  static final image = QueryStringProperty<Blog>(_entities[0].properties[4]);
+
+  /// see [Blog.blogId]
+  static final blogId = QueryStringProperty<Blog>(_entities[0].properties[5]);
+
+  /// see [Blog.user]
+  static final user =
+      QueryRelationToOne<Blog, User>(_entities[0].properties[6]);
 }
 
 /// [User] entity fields to define ObjectBox queries.
@@ -275,8 +290,4 @@ class User_ {
 
   /// see [User.password]
   static final password = QueryStringProperty<User>(_entities[1].properties[4]);
-
-  /// see [User.blog]
-  static final blog =
-      QueryRelationToMany<User, Blog>(_entities[1].relations[0]);
 }
