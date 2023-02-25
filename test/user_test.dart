@@ -54,6 +54,6 @@ void main() {
       expect(actualResult, expectedResult);
     });
 
-    test('Should Navigate to AddBlog', () async {});
+    test('Should add blog', () async {});
   });
 }

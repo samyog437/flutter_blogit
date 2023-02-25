@@ -1,6 +1,7 @@
 import 'package:blogit/app/constants.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/repository/blog_respository.dart';
+import 'package:blogit/screen/bottom_screen/editBlogScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/basic.dart';
@@ -95,6 +96,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       return ListTile(
                         title: Text(blog.title ?? ''),
                         subtitle: Text(blog.content ?? ''),
+                        trailing: IconButton(
+                          onPressed: () async {
+                            Navigator.pushNamed(context, EditBlogScreen.route,
+                                arguments: blog);
+                          },
+                          icon: const Icon(Icons.edit),
+                        ),
                       );
                     },
                   );

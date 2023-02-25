@@ -2,6 +2,7 @@ import 'package:blogit/app/theme_data.dart';
 import 'package:blogit/screen/blogdetail.dart';
 import 'package:blogit/screen/bottom_screen/addblogscreen.dart';
 import 'package:blogit/screen/bottom_screen/dashboard.dart';
+import 'package:blogit/screen/bottom_screen/editBlogScreen.dart';
 import 'package:blogit/screen/bottom_screen/homescreen.dart';
 import 'package:blogit/screen/bottom_screen/profilescreen.dart';
 import 'package:blogit/screen/google_map/googleMap.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         // '/': (context) => const WearLoginScreen(),
         // '/': (context) => const GoogleMapScreen(),
         WearDashboardScreen.route: (context) => const WearDashboardScreen(),
-
+        EditBlogScreen.route: (context) => const EditBlogScreen(),
         '/loginScreen': (context) => const LoginScreen(),
         '/registerScreen': (context) => const RegisterScreen(),
         DashboardScreen.route: (context) => const DashboardScreen(),

@@ -8,6 +8,7 @@ abstract class BlogRepository {
   Future<List<Blog>> getAllUserBlog(userid);
   Future<Blog?> getABlog(id);
   Future<int> createBlog(File? file, Blog blog);
+  Future<int> editBlog(File? file, Blog blog, userId);
 }
 
 class BlogRepositoryImpl extends BlogRepository {
@@ -29,5 +30,10 @@ class BlogRepositoryImpl extends BlogRepository {
   @override
   Future<List<Blog>> getAllUserBlog(userid) {
     return BlogRemoteDataSource().getAllUserBlog(userid);
+  }
+
+  @override
+  Future<int> editBlog(File? file, Blog blog, userId) {
+    return BlogRemoteDataSource().editBlog(file, blog, userId);
   }
 }

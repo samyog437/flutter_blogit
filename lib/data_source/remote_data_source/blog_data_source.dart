@@ -153,4 +153,47 @@ class BlogRemoteDataSource {
       // return 0;
     }
   }
+
+  Future<int> editBlog(File? file, Blog blog, String userId) async {
+    try {
+      if (blog.users?.usrId != userId) {
+        return 0;
+      }
+
+      MultipartFile? image;
+      if (file != null) {
+        var mimeType = lookupMimeType(file.path);
+        image = await MultipartFile.fromFile(
+          file.path,
+          filename: file.path.split('/').last,
+          contentType: MediaType('image', mimeType!.split("/")[1]),
+        );
+      }
+
+      FormData formData = FormData.fromMap({
+        'image': image,
+        'title': blog.title,
+        'content': blog.content,
+      });
+
+      formData.fields.add(MapEntry("userId", userId));
+      _httpServices.options.headers["Authorization"] = Constant.token;
+
+      Response response = await _httpServices.put(
+        "${Constant.blogURL}/${blog.id}",
+        data: formData,
+      );
+      print("API endpoint: ${Constant.blogURL}");
+      print("Status code: ${response.statusCode}");
+      print("Response data: ${response.data}");
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to create Blog');
+    }
+  }
 }
