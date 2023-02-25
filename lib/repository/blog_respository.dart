@@ -5,6 +5,7 @@ import 'package:blogit/model/blog.dart';
 
 abstract class BlogRepository {
   Future<List<Blog>> getAllBlog();
+  Future<List<Blog>> getAllUserBlog(userid);
   Future<Blog?> getABlog(id);
   Future<int> createBlog(File? file, Blog blog);
 }
@@ -23,5 +24,10 @@ class BlogRepositoryImpl extends BlogRepository {
   @override
   Future<int> createBlog(File? file, Blog blog) async {
     return BlogRemoteDataSource().createBlog(file, blog);
+  }
+
+  @override
+  Future<List<Blog>> getAllUserBlog(userid) {
+    return BlogRemoteDataSource().getAllUserBlog(userid);
   }
 }

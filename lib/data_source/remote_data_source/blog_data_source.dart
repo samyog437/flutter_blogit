@@ -66,6 +66,30 @@ class BlogRemoteDataSource {
     }
   }
 
+  Future<List<Blog>> getAllUserBlog(String userId) async {
+    try {
+      final response = await _httpServices.get(Constant.blogURL);
+      print("API endpoint: ${Constant.blogURL}");
+      print("Status code: ${response.statusCode}");
+      print("Response data: ${response.data}");
+
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> blogDataList =
+            List<Map<String, dynamic>>.from(response.data);
+        print("blogDataList: $blogDataList");
+
+        final List<Blog> blogs =
+            blogDataList.map((blogData) => Blog.fromJson(blogData)).toList();
+        return blogs.where((blog) => blog.users?.usrId == userId).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load Blog');
+    }
+  }
+
   Future<Blog?> getABlog(String id) async {
     try {
       Response response = await _httpServices.get(

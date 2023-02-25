@@ -41,7 +41,7 @@ class UserRemoteDataSource {
           'password': password,
         },
       );
-      
+
       if (response.statusCode == 200) {
         LoginResponse loginResponse = LoginResponse.fromJson(response.data);
         Constant.token = "Bearer ${loginResponse.token!}";

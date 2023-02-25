@@ -1,3 +1,5 @@
+import 'package:blogit/model/blog.dart';
+import 'package:blogit/repository/blog_respository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/basic.dart';
@@ -12,6 +14,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late Future<List<Blog>> _userblogs;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _userblogs = BlogRepositoryImpl().getAllUserBlog();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

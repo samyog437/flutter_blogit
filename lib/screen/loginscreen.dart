@@ -5,6 +5,7 @@ import 'package:blogit/repository/user_repository.dart';
 import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,9 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
     final isLogin = await UserRepositoryImpl()
         .loginUser(_usernameController.text, _passwordController.text);
     if (isLogin) {
-      final username = _usernameController.text;
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('username', _usernameController.text);
+      await prefs.setString('password', _passwordController.text);
+
       _goToAnotherPage();
-      _showNotification(username);
+      _showNotification(_usernameController.text);
     } else {
       _showMessage();
     }

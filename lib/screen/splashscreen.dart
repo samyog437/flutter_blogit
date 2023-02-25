@@ -1,4 +1,8 @@
+import 'package:blogit/objectbox.g.dart';
+import 'package:blogit/repository/user_repository.dart';
+import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,15 +12,34 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String data = '';
   @override
   void initState() {
     Future.delayed(
       const Duration(seconds: 3),
-      () {
-        Navigator.pushReplacementNamed(context, '/loginScreen');
-      },
     );
     super.initState();
+    checkLoggedIn();
+  }
+
+  void checkLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storedusername = prefs.getString('username');
+    final storedpassword = prefs.getString('password');
+    if (storedusername != null && storedpassword != null) {
+      final isLogin =
+          await UserRepositoryImpl().loginUser(storedusername, storedpassword);
+      if (isLogin) {
+        setState(() {
+          Navigator.pushNamed(context, DashboardScreen.route,
+              arguments: User_.userId);
+        });
+      }
+    } else {
+      setState(() {
+        Navigator.pushReplacementNamed(context, '/loginScreen');
+      });
+    }
   }
 
   @override

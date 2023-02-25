@@ -10,7 +10,7 @@ class Constant {
   static const String blogURL = "blogs";
   static const String blogImageURL = "http://10.0.2.2:3000/image/";
 
-  static const String profileBlogURL = "profile/blog";
+  static const String profileBlogURL = "profile/blogs";
 
   static String token = "";
 }

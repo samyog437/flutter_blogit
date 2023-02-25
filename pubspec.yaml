@@ -51,6 +51,7 @@ dependencies:
   test_cov_console: ^0.2.2
   mime: ^1.0.4
   http_parser: ^4.0.2
+  shared_preferences: ^2.0.18
 
 dev_dependencies:
   flutter_test:
