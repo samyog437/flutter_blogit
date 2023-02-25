@@ -1,3 +1,4 @@
+import 'package:blogit/app/constants.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/repository/blog_respository.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,11 +17,11 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<List<Blog>> _userblogs;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _userblogs = BlogRepositoryImpl().getAllUserBlog();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _userblogs = BlogRepositoryImpl().getAllUserBlog(Constant.userId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +70,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<Blog>>(
+              future: _userblogs,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Failed to load Blogs'),
+                    );
+                  }
+                  final List<Blog>? blogs = snapshot.data;
+                  if (blogs == null || blogs.isEmpty) {
+                    return const Center(
+                      child: Text('No blogs found'),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: blogs.length,
+                    itemBuilder: (context, index) {
+                      final Blog blog = blogs[index];
+                      return ListTile(
+                        title: Text(blog.title ?? ''),
+                        subtitle: Text(blog.content ?? ''),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           )
         ],

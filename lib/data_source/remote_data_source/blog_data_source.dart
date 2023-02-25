@@ -78,9 +78,11 @@ class BlogRemoteDataSource {
             List<Map<String, dynamic>>.from(response.data);
         print("blogDataList: $blogDataList");
 
-        final List<Blog> blogs =
-            blogDataList.map((blogData) => Blog.fromJson(blogData)).toList();
-        return blogs.where((blog) => blog.users?.usrId == userId).toList();
+        final List<Blog> blogs = blogDataList
+            .map((blogData) => Blog.fromJson(blogData))
+            .where((blog) => blog.users?.usrId == userId)
+            .toList();
+        return blogs;
       } else {
         return [];
       }

@@ -13,4 +13,5 @@ class Constant {
   static const String profileBlogURL = "profile/blogs";
 
   static String token = "";
+  static String userId = "";
 }
