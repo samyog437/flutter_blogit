@@ -12,7 +12,7 @@ Blog _$BlogFromJson(Map<String, dynamic> json) => Blog(
       title: json['title'] as String?,
       content: json['content'] as String?,
       view: json['view'] as int?,
-      users: json['user'] == null
+      user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
       id: json['id'] as int? ?? 0,
@@ -25,5 +25,5 @@ Map<String, dynamic> _$BlogToJson(Blog instance) => <String, dynamic>{
       'title': instance.title,
       'content': instance.content,
       'view': instance.view,
-      'user': instance.users,
+      'user': instance.user,
     };

@@ -23,9 +23,9 @@ class Blog {
   int? view;
 
   @JsonKey(name: 'user')
-  User? users;
+  User? user;
 
-  final user = ToOne<User>();
+  final users = ToOne<User>();
 
   Blog(
       {this.blogId,
@@ -33,7 +33,7 @@ class Blog {
       this.title,
       this.content,
       this.view,
-      this.users,
+      this.user,
       this.id = 0});
 
   factory Blog.fromJson(Map<String, dynamic> json) => _$BlogFromJson(json);

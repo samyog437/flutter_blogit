@@ -23,7 +23,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 9105634663828243263),
       name: 'Blog',
-      lastPropertyId: const IdUid(18, 3489685724960804401),
+      lastPropertyId: const IdUid(19, 7965918738481204003),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -58,11 +58,11 @@ final _entities = <ModelEntity>[
             flags: 2080,
             indexId: const IdUid(3, 42154418459061028)),
         ModelProperty(
-            id: const IdUid(18, 3489685724960804401),
-            name: 'userId',
+            id: const IdUid(19, 7965918738481204003),
+            name: 'usersId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(4, 4323185171255159374),
+            indexId: const IdUid(5, 6410688602813038669),
             relationTarget: 'User')
       ],
       relations: <ModelRelation>[],
@@ -125,11 +125,11 @@ ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
       lastEntityId: const IdUid(2, 5404242064788204015),
-      lastIndexId: const IdUid(4, 4323185171255159374),
+      lastIndexId: const IdUid(5, 6410688602813038669),
       lastRelationId: const IdUid(2, 6512603844235776691),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
-      retiredIndexUids: const [3880146460523201159],
+      retiredIndexUids: const [3880146460523201159, 4323185171255159374],
       retiredPropertyUids: const [
         5212515780373810553,
         8557084770714597963,
@@ -141,7 +141,8 @@ ModelDefinition getObjectBoxModel() {
         3100897669074555906,
         9005910269781168528,
         5916502683238656805,
-        7360545069101046422
+        7360545069101046422,
+        3489685724960804401
       ],
       retiredRelationUids: const [120889184953418855, 6512603844235776691],
       modelVersion: 5,
@@ -151,7 +152,7 @@ ModelDefinition getObjectBoxModel() {
   final bindings = <Type, EntityDefinition>{
     Blog: EntityDefinition<Blog>(
         model: _entities[0],
-        toOneRelations: (Blog object) => [object.user],
+        toOneRelations: (Blog object) => [object.users],
         toManyRelations: (Blog object) => {},
         getId: (Blog object) => object.id,
         setId: (Blog object, int id) {
@@ -166,14 +167,14 @@ ModelDefinition getObjectBoxModel() {
               object.image == null ? null : fbb.writeString(object.image!);
           final blogIdOffset =
               object.blogId == null ? null : fbb.writeString(object.blogId!);
-          fbb.startTable(19);
+          fbb.startTable(20);
           fbb.addInt64(0, object.id);
           fbb.addOffset(2, titleOffset);
           fbb.addOffset(3, contentOffset);
           fbb.addInt64(4, object.view);
           fbb.addOffset(5, imageOffset);
           fbb.addOffset(15, blogIdOffset);
-          fbb.addInt64(17, object.user.targetId);
+          fbb.addInt64(18, object.users.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -193,9 +194,9 @@ ModelDefinition getObjectBoxModel() {
               view: const fb.Int64Reader()
                   .vTableGetNullable(buffer, rootOffset, 12),
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
-          object.user.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 38, 0);
-          object.user.attach(store);
+          object.users.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 40, 0);
+          object.users.attach(store);
           return object;
         }),
     User: EntityDefinition<User>(
@@ -269,8 +270,8 @@ class Blog_ {
   /// see [Blog.blogId]
   static final blogId = QueryStringProperty<Blog>(_entities[0].properties[5]);
 
-  /// see [Blog.user]
-  static final user =
+  /// see [Blog.users]
+  static final users =
       QueryRelationToOne<Blog, User>(_entities[0].properties[6]);
 }
 

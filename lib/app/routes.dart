@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
         BlogDetailScreen.route: (context) => const BlogDetailScreen(),
         '/homeScreen': (context) => const HomeScreen(),
         '/addBlogScreen': (context) => const AddBlogScreen(),
-        '/profileScreen': (context) => const ProfileScreen(),
+        // '/profileScreen': (context) => const ProfileScreen(),
+        ProfileScreen.route: (context) => const ProfileScreen(),
       },
     );
   }

@@ -55,7 +55,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    blog.users?.username ?? 'Unknown',
+                    blog.user?.username ?? 'Unknown',
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
