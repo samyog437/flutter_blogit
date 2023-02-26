@@ -21,6 +21,7 @@ class Blog {
   String? title;
   String? content;
   int? view;
+  List<Comment>? comments;
 
   @JsonKey(name: 'user')
   User? user;
@@ -34,9 +35,24 @@ class Blog {
       this.content,
       this.view,
       this.user,
+      this.comments,
       this.id = 0});
 
   factory Blog.fromJson(Map<String, dynamic> json) => _$BlogFromJson(json);
 
   Map<String, dynamic> toJson() => _$BlogToJson(this);
+}
+
+@JsonSerializable()
+class Comment {
+  String? body;
+  String? commenterId;
+  DateTime? date;
+
+  Comment({this.body, this.commenterId, this.date});
+
+  factory Comment.fromJson(Map<String, dynamic> json) =>
+      _$CommentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CommentToJson(this);
 }

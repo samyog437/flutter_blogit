@@ -15,6 +15,9 @@ Blog _$BlogFromJson(Map<String, dynamic> json) => Blog(
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
+      comments: (json['comments'] as List<dynamic>?)
+          ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
+          .toList(),
       id: json['id'] as int? ?? 0,
     );
 
@@ -25,5 +28,19 @@ Map<String, dynamic> _$BlogToJson(Blog instance) => <String, dynamic>{
       'title': instance.title,
       'content': instance.content,
       'view': instance.view,
+      'comments': instance.comments,
       'user': instance.user,
+    };
+
+Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
+      body: json['body'] as String?,
+      commenterId: json['commenterId'] as String?,
+      date:
+          json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    );
+
+Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
+      'body': instance.body,
+      'commenterId': instance.commenterId,
+      'date': instance.date?.toIso8601String(),
     };

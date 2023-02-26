@@ -17,6 +17,7 @@ class BlogDetailScreen extends StatefulWidget {
 
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   late Blog blog;
+  TextEditingController commentController = TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -34,43 +35,94 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: Image.network(
-                      Constant.blogImageURL + blog.image!,
-                    )),
-                Align(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Align(
                   alignment: Alignment.topLeft,
-                  child: Text(
-                    blog.title!,
-                    style: const TextStyle(fontSize: 30),
-                  ),
+                  child: Image.network(
+                    Constant.blogImageURL + blog.image!,
+                  )),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  blog.title!,
+                  style: const TextStyle(fontSize: 30),
                 ),
-                const SizedBox(
-                  height: 30,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  blog.user?.username ?? 'Unknown',
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    blog.user?.username ?? 'Unknown',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue),
-                  ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  blog.content!,
+                  style: const TextStyle(fontSize: 18),
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    blog.content!,
-                    style: const TextStyle(fontSize: 18),
-                  ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: commentController,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        errorStyle: const TextStyle(
+                            color: Colors.white, backgroundColor: Colors.red),
+                        hintText: 'Add a Comment',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFFad5389)),
+                      ),
+                      child: const Text(
+                        'Add Comment',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            )),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: blog.comments!.length,
+                  itemBuilder: (context, index) {
+                    var comment = blog.comments![index];
+                    return ListTile(
+                      title: Text(comment.body!),
+                      subtitle: Text(comment.commenterId ?? 'Unknown'),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
