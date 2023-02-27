@@ -11,6 +11,7 @@ class Constant {
   static const String blogImageURL = "http://10.0.2.2:3000/image/";
 
   static const String profileBlogURL = "profile/blogs";
+  static const String commentURL = "comments";
 
   static String token = "";
   static String userId = "";

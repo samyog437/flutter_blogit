@@ -1,5 +1,8 @@
 import 'package:blogit/app/constants.dart';
+import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/model/blog.dart';
+import 'package:blogit/model/comment.dart';
+import 'package:blogit/repository/comment_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +17,31 @@ class BlogDetailScreen extends StatefulWidget {
 
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   late Blog blog;
-  TextEditingController commentController = TextEditingController();
+  final _commentController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void didChangeDependencies() {
     blog = ModalRoute.of(context)!.settings.arguments as Blog;
     super.didChangeDependencies();
+  }
+
+  _addComment() async {
+    // Comment comment = Comment(
+    //   body: _commentController.text,
+    // );
+    int status = await CommentRepositoryImpl()
+        .createComment(blog.blogId!, _commentController.text);
+    _showMessage(status);
+  }
+
+  _showMessage(int status) {
+    if (status > 0) {
+      showSnackbar(context, 'Blog Added Successfully!', Colors.green);
+    } else {
+      showSnackbar(context, 'Error Adding Blog', Colors.red);
+    }
   }
 
   @override
@@ -71,40 +93,47 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                        controller: commentController,
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          errorStyle: const TextStyle(
-                            color: Colors.white,
-                            backgroundColor: Colors.red,
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextFormField(
+                          controller: _commentController,
+                          maxLines: 5,
+                          decoration: InputDecoration(
+                            errorStyle: const TextStyle(
+                              color: Colors.white,
+                              backgroundColor: Colors.red,
+                            ),
+                            hintText: 'Add a Comment',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
-                          hintText: 'Add a Comment',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _addComment();
+                            }
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                const Color(0xFFad5389)),
                           ),
-                          filled: true,
-                          fillColor: Colors.white,
+                          child: const Text(
+                            'Add Comment',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              const Color(0xFFad5389)),
-                        ),
-                        child: const Text(
-                          'Add Comment',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 20,
