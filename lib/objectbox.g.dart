@@ -15,6 +15,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'model/blog.dart';
+import 'model/comment.dart';
 import 'model/user.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -101,6 +102,25 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(3, 2727823371818458283),
+      name: 'Comment',
+      lastPropertyId: const IdUid(4, 1825572113113392253),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5278337149668726741),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 9096309979383522680),
+            name: 'body',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -124,12 +144,17 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(2, 5404242064788204015),
-      lastIndexId: const IdUid(5, 6410688602813038669),
+      lastEntityId: const IdUid(3, 2727823371818458283),
+      lastIndexId: const IdUid(7, 95420821201852734),
       lastRelationId: const IdUid(2, 6512603844235776691),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
-      retiredIndexUids: const [3880146460523201159, 4323185171255159374],
+      retiredIndexUids: const [
+        3880146460523201159,
+        4323185171255159374,
+        1813305359087339997,
+        95420821201852734
+      ],
       retiredPropertyUids: const [
         5212515780373810553,
         8557084770714597963,
@@ -142,7 +167,9 @@ ModelDefinition getObjectBoxModel() {
         9005910269781168528,
         5916502683238656805,
         7360545069101046422,
-        3489685724960804401
+        3489685724960804401,
+        6142076646610697813,
+        1825572113113392253
       ],
       retiredRelationUids: const [120889184953418855, 6512603844235776691],
       modelVersion: 5,
@@ -244,6 +271,34 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
 
           return object;
+        }),
+    Comment: EntityDefinition<Comment>(
+        model: _entities[2],
+        toOneRelations: (Comment object) => [],
+        toManyRelations: (Comment object) => {},
+        getId: (Comment object) => object.id,
+        setId: (Comment object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Comment object, fb.Builder fbb) {
+          final bodyOffset =
+              object.body == null ? null : fbb.writeString(object.body!);
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, bodyOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Comment(
+              body: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
+
+          return object;
         })
   };
 
@@ -291,4 +346,13 @@ class User_ {
 
   /// see [User.password]
   static final password = QueryStringProperty<User>(_entities[1].properties[4]);
+}
+
+/// [Comment] entity fields to define ObjectBox queries.
+class Comment_ {
+  /// see [Comment.id]
+  static final id = QueryIntegerProperty<Comment>(_entities[2].properties[0]);
+
+  /// see [Comment.body]
+  static final body = QueryStringProperty<Comment>(_entities[2].properties[1]);
 }

@@ -1,3 +1,4 @@
+import 'package:blogit/model/comment.dart';
 import 'package:blogit/model/user.dart';
 import 'package:blogit/objectbox.g.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -21,6 +22,8 @@ class Blog {
   String? title;
   String? content;
   int? view;
+
+  @JsonKey(name: 'comments')
   List<Comment>? comments;
 
   @JsonKey(name: 'user')
@@ -41,18 +44,4 @@ class Blog {
   factory Blog.fromJson(Map<String, dynamic> json) => _$BlogFromJson(json);
 
   Map<String, dynamic> toJson() => _$BlogToJson(this);
-}
-
-@JsonSerializable()
-class Comment {
-  String? body;
-  String? commenterId;
-  DateTime? date;
-
-  Comment({this.body, this.commenterId, this.date});
-
-  factory Comment.fromJson(Map<String, dynamic> json) =>
-      _$CommentFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CommentToJson(this);
 }

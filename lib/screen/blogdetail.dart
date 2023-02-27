@@ -115,7 +115,8 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                     var comment = blog.comments![index];
                     return ListTile(
                       title: Text(comment.body!),
-                      subtitle: Text(comment.commenterId ?? 'Unknown'),
+                      subtitle:
+                          Text(comment.commenterId?.username ?? 'Unknown'),
                     );
                   },
                 ),

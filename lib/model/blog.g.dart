@@ -31,16 +31,3 @@ Map<String, dynamic> _$BlogToJson(Blog instance) => <String, dynamic>{
       'comments': instance.comments,
       'user': instance.user,
     };
-
-Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
-      body: json['body'] as String?,
-      commenterId: json['commenterId'] as String?,
-      date:
-          json['date'] == null ? null : DateTime.parse(json['date'] as String),
-    );
-
-Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
-      'body': instance.body,
-      'commenterId': instance.commenterId,
-      'date': instance.date?.toIso8601String(),
-    };
