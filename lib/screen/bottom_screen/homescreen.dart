@@ -1,3 +1,4 @@
+import 'package:blogit/app/constants.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/repository/blog_respository.dart';
 import 'package:blogit/screen/blogdetail.dart';
@@ -149,12 +150,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         style: TextStyle(
                                             fontSize: contentFontSize),
                                       ),
-                                      leading: Icon(
-                                        Icons.library_books,
-                                        size: constraints.maxWidth < 600
-                                            ? 30
-                                            : 40,
-                                      ),
+                                      // leading: Icon(
+                                      //   Icons.library_books,
+                                      //   size: constraints.maxWidth < 600
+                                      //       ? 30
+                                      //       : 40,
+                                      // ),
+                                      leading: Image.network(
+                                          Constant.blogImageURL + blog.image!),
                                       trailing: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [

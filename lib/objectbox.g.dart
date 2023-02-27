@@ -24,7 +24,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 9105634663828243263),
       name: 'Blog',
-      lastPropertyId: const IdUid(19, 7965918738481204003),
+      lastPropertyId: const IdUid(21, 1471168114912602925),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -59,19 +59,21 @@ final _entities = <ModelEntity>[
             flags: 2080,
             indexId: const IdUid(3, 42154418459061028)),
         ModelProperty(
-            id: const IdUid(19, 7965918738481204003),
+            id: const IdUid(21, 1471168114912602925),
             name: 'usersId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(5, 6410688602813038669),
+            indexId: const IdUid(15, 7605878277487384155),
             relationTarget: 'User')
       ],
       relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
+      backlinks: <ModelBacklink>[
+        ModelBacklink(name: 'comment', srcEntity: 'Comment', srcField: '')
+      ]),
   ModelEntity(
       id: const IdUid(2, 5404242064788204015),
       name: 'User',
-      lastPropertyId: const IdUid(5, 2298174321435901355),
+      lastPropertyId: const IdUid(6, 8859775706370536366),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -84,7 +86,7 @@ final _entities = <ModelEntity>[
             name: 'usrId',
             type: 9,
             flags: 2080,
-            indexId: const IdUid(2, 6874142888791140443)),
+            indexId: const IdUid(19, 5854347089735274148)),
         ModelProperty(
             id: const IdUid(3, 2558170714004826875),
             name: 'username',
@@ -101,12 +103,17 @@ final _entities = <ModelEntity>[
             type: 9,
             flags: 0)
       ],
-      relations: <ModelRelation>[],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(6, 8376582643347227721),
+            name: 'comments',
+            targetId: const IdUid(3, 2727823371818458283))
+      ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
       id: const IdUid(3, 2727823371818458283),
       name: 'Comment',
-      lastPropertyId: const IdUid(4, 1825572113113392253),
+      lastPropertyId: const IdUid(24, 5036574133477708847),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -117,6 +124,29 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(2, 9096309979383522680),
             name: 'body',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 1615496760514891697),
+            name: 'commentId',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(11, 7019775514545406771)),
+        ModelProperty(
+            id: const IdUid(14, 5875955773364537697),
+            name: 'blogsId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(16, 1243106707549292988),
+            relationTarget: 'Blog'),
+        ModelProperty(
+            id: const IdUid(23, 8166223351362016230),
+            name: 'date',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(24, 5036574133477708847),
+            name: 'commenterName',
             type: 9,
             flags: 0)
       ],
@@ -145,15 +175,25 @@ ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
       lastEntityId: const IdUid(3, 2727823371818458283),
-      lastIndexId: const IdUid(7, 95420821201852734),
-      lastRelationId: const IdUid(2, 6512603844235776691),
+      lastIndexId: const IdUid(19, 5854347089735274148),
+      lastRelationId: const IdUid(6, 8376582643347227721),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [
         3880146460523201159,
         4323185171255159374,
         1813305359087339997,
-        95420821201852734
+        95420821201852734,
+        6302257735270708135,
+        5134324427464153419,
+        6410688602813038669,
+        6609568733925272114,
+        703949982839978298,
+        7738362875736658753,
+        3383518776867874205,
+        9061653789016063194,
+        6874142888791140443,
+        4404378525030818353
       ],
       retiredPropertyUids: const [
         5212515780373810553,
@@ -169,9 +209,34 @@ ModelDefinition getObjectBoxModel() {
         7360545069101046422,
         3489685724960804401,
         6142076646610697813,
-        1825572113113392253
+        1825572113113392253,
+        2707731942287986776,
+        7579633144993044553,
+        2936832247459033335,
+        4603678798468701667,
+        1459880459688156398,
+        7965918738481204003,
+        1379099150364087024,
+        4807094141351907455,
+        9020966057632558947,
+        8058818780145767671,
+        3314715564961091115,
+        7910636153032457721,
+        5788629757945056663,
+        1546835024288598962,
+        8859775706370536366,
+        807820129126968763,
+        3114933066106216320,
+        6559650506384984901,
+        3446708793937571356
       ],
-      retiredRelationUids: const [120889184953418855, 6512603844235776691],
+      retiredRelationUids: const [
+        120889184953418855,
+        6512603844235776691,
+        6974061208159999115,
+        3417498491106097559,
+        4669437515480169918
+      ],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
@@ -180,7 +245,11 @@ ModelDefinition getObjectBoxModel() {
     Blog: EntityDefinition<Blog>(
         model: _entities[0],
         toOneRelations: (Blog object) => [object.users],
-        toManyRelations: (Blog object) => {},
+        toManyRelations: (Blog object) => {
+              RelInfo<Comment>.toOneBacklink(
+                      14, object.id, (Comment srcObject) => srcObject.blogs):
+                  object.comment
+            },
         getId: (Blog object) => object.id,
         setId: (Blog object, int id) {
           object.id = id;
@@ -194,14 +263,14 @@ ModelDefinition getObjectBoxModel() {
               object.image == null ? null : fbb.writeString(object.image!);
           final blogIdOffset =
               object.blogId == null ? null : fbb.writeString(object.blogId!);
-          fbb.startTable(20);
+          fbb.startTable(22);
           fbb.addInt64(0, object.id);
           fbb.addOffset(2, titleOffset);
           fbb.addOffset(3, contentOffset);
           fbb.addInt64(4, object.view);
           fbb.addOffset(5, imageOffset);
           fbb.addOffset(15, blogIdOffset);
-          fbb.addInt64(18, object.users.targetId);
+          fbb.addInt64(20, object.users.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -222,14 +291,21 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 12),
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
           object.users.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 40, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 44, 0);
           object.users.attach(store);
+          InternalToManyAccess.setRelInfo(
+              object.comment,
+              store,
+              RelInfo<Comment>.toOneBacklink(
+                  14, object.id, (Comment srcObject) => srcObject.blogs),
+              store.box<Blog>());
           return object;
         }),
     User: EntityDefinition<User>(
         model: _entities[1],
         toOneRelations: (User object) => [],
-        toManyRelations: (User object) => {},
+        toManyRelations: (User object) =>
+            {RelInfo<User>.toMany(6, object.userId): object.comments},
         getId: (User object) => object.userId,
         setId: (User object, int id) {
           object.userId = id;
@@ -245,7 +321,7 @@ ModelDefinition getObjectBoxModel() {
           final passwordOffset = object.password == null
               ? null
               : fbb.writeString(object.password!);
-          fbb.startTable(6);
+          fbb.startTable(7);
           fbb.addInt64(0, object.userId);
           fbb.addOffset(1, usrIdOffset);
           fbb.addOffset(2, usernameOffset);
@@ -269,12 +345,13 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 12),
               userId:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
-
+          InternalToManyAccess.setRelInfo(object.comments, store,
+              RelInfo<User>.toMany(6, object.userId), store.box<User>());
           return object;
         }),
     Comment: EntityDefinition<Comment>(
         model: _entities[2],
-        toOneRelations: (Comment object) => [],
+        toOneRelations: (Comment object) => [object.blogs],
         toManyRelations: (Comment object) => {},
         getId: (Comment object) => object.id,
         setId: (Comment object, int id) {
@@ -283,9 +360,21 @@ ModelDefinition getObjectBoxModel() {
         objectToFB: (Comment object, fb.Builder fbb) {
           final bodyOffset =
               object.body == null ? null : fbb.writeString(object.body!);
-          fbb.startTable(5);
+          final commentIdOffset = object.commentId == null
+              ? null
+              : fbb.writeString(object.commentId!);
+          final dateOffset =
+              object.date == null ? null : fbb.writeString(object.date!);
+          final commenterNameOffset = object.commenterName == null
+              ? null
+              : fbb.writeString(object.commenterName!);
+          fbb.startTable(25);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, bodyOffset);
+          fbb.addOffset(8, commentIdOffset);
+          fbb.addInt64(13, object.blogs.targetId);
+          fbb.addOffset(22, dateOffset);
+          fbb.addOffset(23, commenterNameOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -294,10 +383,18 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = Comment(
+              commentId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 20),
               body: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 6),
+              commenterName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 50),
+              date: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 48),
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
-
+          object.blogs.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 30, 0);
+          object.blogs.attach(store);
           return object;
         })
   };
@@ -346,6 +443,10 @@ class User_ {
 
   /// see [User.password]
   static final password = QueryStringProperty<User>(_entities[1].properties[4]);
+
+  /// see [User.comments]
+  static final comments =
+      QueryRelationToMany<User, Comment>(_entities[1].relations[0]);
 }
 
 /// [Comment] entity fields to define ObjectBox queries.
@@ -355,4 +456,19 @@ class Comment_ {
 
   /// see [Comment.body]
   static final body = QueryStringProperty<Comment>(_entities[2].properties[1]);
+
+  /// see [Comment.commentId]
+  static final commentId =
+      QueryStringProperty<Comment>(_entities[2].properties[2]);
+
+  /// see [Comment.blogs]
+  static final blogs =
+      QueryRelationToOne<Comment, Blog>(_entities[2].properties[3]);
+
+  /// see [Comment.date]
+  static final date = QueryStringProperty<Comment>(_entities[2].properties[4]);
+
+  /// see [Comment.commenterName]
+  static final commenterName =
+      QueryStringProperty<Comment>(_entities[2].properties[5]);
 }

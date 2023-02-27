@@ -23,6 +23,9 @@ class Blog {
   String? content;
   int? view;
 
+  @Backlink()
+  final comment = ToMany<Comment>();
+
   @JsonKey(name: 'comments')
   List<Comment>? comments;
 

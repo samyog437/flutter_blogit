@@ -1,10 +1,7 @@
 import 'package:blogit/app/constants.dart';
 import 'package:blogit/model/blog.dart';
-import 'package:blogit/model/user.dart';
-import 'package:blogit/repository/user_repository.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class BlogDetailScreen extends StatefulWidget {
   const BlogDetailScreen({super.key});
@@ -32,98 +29,107 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
       appBar: AppBar(
         title: Text(blog.title!),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Align(
-                  alignment: Alignment.topLeft,
-                  child: Image.network(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Image.network(
                     Constant.blogImageURL + blog.image!,
-                  )),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  blog.title!,
-                  style: const TextStyle(fontSize: 30),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  blog.user?.username ?? 'Unknown',
-                  style: const TextStyle(
+                    height: constraints.maxWidth * 0.5,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    blog.title!,
+                    style: const TextStyle(fontSize: 30),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    blog.user?.username ?? 'Unknown',
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  blog.content!,
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: commentController,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        errorStyle: const TextStyle(
-                            color: Colors.white, backgroundColor: Colors.red),
-                        hintText: 'Add a Comment',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                      color: Colors.blue,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    blog.content!,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextFormField(
+                        controller: commentController,
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          errorStyle: const TextStyle(
+                            color: Colors.white,
+                            backgroundColor: Colors.red,
+                          ),
+                          hintText: 'Add a Comment',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
                         ),
-                        filled: true,
-                        fillColor: Colors.white,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xFFad5389)),
+                      SizedBox(
+                        height: 20,
                       ),
-                      child: const Text(
-                        'Add Comment',
-                        style: TextStyle(color: Colors.white),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xFFad5389)),
+                        ),
+                        child: const Text(
+                          'Add Comment',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: blog.comments!.length,
+                    itemBuilder: (context, index) {
+                      var comment = blog.comments![index];
+                      final dateTime = DateTime.parse(comment.date!);
+                      final formattedDate = DateFormat.yMd().format(dateTime);
+
+                      print('Comment is: $comment');
+                      return ListTile(
+                          leading: const Icon(Icons.comment),
+                          title: Text(comment.body!),
+                          subtitle: Text(comment.commenterName ?? 'Unknown'),
+                          trailing: Text(formattedDate));
+                    },
+                  ),
+                ],
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: blog.comments!.length,
-                  itemBuilder: (context, index) {
-                    var comment = blog.comments![index];
-                    return ListTile(
-                      title: Text(comment.body!),
-                      subtitle:
-                          Text(comment.commenterId?.username ?? 'Unknown'),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

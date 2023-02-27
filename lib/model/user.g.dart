@@ -12,9 +12,13 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       email: json['email'] as String?,
       password: json['password'] as String?,
       userId: json['userId'] as int? ?? 0,
-    )..blog = (json['blog'] as List<dynamic>?)
-        ?.map((e) => Blog.fromJson(e as Map<String, dynamic>))
-        .toList();
+    )
+      ..blog = (json['blog'] as List<dynamic>?)
+          ?.map((e) => Blog.fromJson(e as Map<String, dynamic>))
+          .toList()
+      ..comment = (json['comment'] as List<dynamic>?)
+          ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
+          .toList();
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'userId': instance.userId,
@@ -23,4 +27,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'password': instance.password,
       'blog': instance.blog,
+      'comment': instance.comment,
     };

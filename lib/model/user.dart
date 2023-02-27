@@ -1,4 +1,5 @@
 import 'package:blogit/model/blog.dart';
+import 'package:blogit/model/comment.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:objectbox/objectbox.dart';
 
@@ -19,6 +20,9 @@ class User {
   String? password;
 
   List<Blog>? blog;
+  List<Comment>? comment;
+
+  final comments = ToMany<Comment>();
 
   User({
     this.usrId,
