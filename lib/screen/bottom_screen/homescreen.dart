@@ -81,8 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: FutureBuilder(
               future: _blogs,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Blog>> snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return LayoutBuilder(
                     builder:
@@ -98,87 +97,95 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Center(
                         child: SizedBox(
                           width: cardWidth,
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              Blog blog = snapshot.data![index];
-                              if (_searchText.isEmpty ||
-                                  blog.title!
-                                      .toLowerCase()
-                                      .contains(_searchText.toLowerCase())) {
-                                int wordCount = 20;
-                                List<String> words = blog.content!.split(" ");
-                                String limitedContent =
-                                    words.take(wordCount).join(" ");
-                                if (words.length > wordCount) {
-                                  limitedContent += "...";
-                                }
+                          child: snapshot.data!.isEmpty
+                              ? const Center(
+                                  child: Text('No blogs found'),
+                                )
+                              : ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Blog blog = snapshot.data![index];
+                                    if (_searchText.isEmpty ||
+                                        blog.title!.toLowerCase().contains(
+                                            _searchText.toLowerCase())) {
+                                      int wordCount = 10;
+                                      List<String> words =
+                                          blog.content!.split(" ");
+                                      String limitedContent =
+                                          words.take(wordCount).join(" ");
+                                      if (words.length > wordCount) {
+                                        limitedContent += "...";
+                                      }
 
-                                return Container(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Card(
-                                    color: const Color(0xF5F5F5F5),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ListTile(
-                                      onTap: () async {
-                                        Blog? blog = await BlogRepositoryImpl()
-                                            .getABlog(
-                                                snapshot.data![index].blogId);
-                                        if (blog != null) {
-                                          Future.microtask(() {
-                                            Navigator.pushNamed(
-                                                context, BlogDetailScreen.route,
-                                                arguments: blog);
-                                          });
-                                        }
-                                      },
-                                      title: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 15),
-                                        child: Text(
-                                          blog.title!,
-                                          style: TextStyle(
-                                            fontSize: titleFontSize,
-                                            // fontWeight: FontWeight.bold,
+                                      return Container(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Card(
+                                          color: const Color(0xF5F5F5F5),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: ListTile(
+                                            onTap: () async {
+                                              Blog? blog =
+                                                  await BlogRepositoryImpl()
+                                                      .getABlog(snapshot
+                                                          .data![index].blogId);
+                                              if (blog != null) {
+                                                Future.microtask(() {
+                                                  Navigator.pushNamed(context,
+                                                      BlogDetailScreen.route,
+                                                      arguments: blog);
+                                                });
+                                              }
+                                            },
+                                            title: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 15),
+                                              child: Text(
+                                                blog.title!,
+                                                style: TextStyle(
+                                                  fontSize: titleFontSize,
+                                                  // fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              limitedContent,
+                                              style: TextStyle(
+                                                  fontSize: contentFontSize),
+                                            ),
+                                            leading: blog.image != null
+                                                ? Image.network(
+                                                    Constant.blogImageURL +
+                                                        blog.image!)
+                                                : Icon(Icons.library_books,
+                                                    size: constraints.maxWidth <
+                                                            600
+                                                        ? 30
+                                                        : 40),
+                                            trailing: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Icon(Icons.visibility),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  '${blog.view.toString()} views',
+                                                ),
+                                              ],
+                                            ),
+                                            // onTap: () {},
                                           ),
                                         ),
-                                      ),
-                                      subtitle: Text(
-                                        limitedContent,
-                                        style: TextStyle(
-                                            fontSize: contentFontSize),
-                                      ),
-                                      // leading: Icon(
-                                      //   Icons.library_books,
-                                      //   size: constraints.maxWidth < 600
-                                      //       ? 30
-                                      //       : 40,
-                                      // ),
-                                      leading: Image.network(
-                                          Constant.blogImageURL + blog.image!),
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Icon(Icons.visibility),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            '${blog.view.toString()} views',
-                                          ),
-                                        ],
-                                      ),
-                                      // onTap: () {},
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return const SizedBox.shrink();
-                              }
-                            },
-                          ),
+                                      );
+                                    } else {
+                                      return const SizedBox.shrink();
+                                    }
+                                  },
+                                ),
                         ),
                       );
                     },

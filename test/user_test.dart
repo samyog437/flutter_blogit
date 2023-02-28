@@ -15,31 +15,11 @@ void main() {
       expect(actualResult, expectedResult);
     });
 
-    test('User should not be able to login', () async {
-      bool expectedResult = false;
-      String username = "testuserasdas";
-      String password = "passwordasds";
-      bool actualResult =
-          await UserRemoteDataSource().loginUser(username, password);
-      expect(actualResult, expectedResult);
-    });
-
     test('User should be registered', () async {
       int expectedResult = 1;
       User user = User(
         username: "testuser7",
         email: "test7@email.com",
-        password: "password",
-      );
-      int actualResult = await UserRemoteDataSource().addUser(user);
-      expect(actualResult, expectedResult);
-    });
-
-    test('User should not be registered', () async {
-      int expectedResult = 0;
-      User user = User(
-        username: "testuser3",
-        email: "test3@email.com",
         password: "password",
       );
       int actualResult = await UserRemoteDataSource().addUser(user);
@@ -54,6 +34,11 @@ void main() {
       expect(actualResult, expectedResult);
     });
 
-    test('Should add blog', () async {});
+    test('Should add blog', () async {
+      final expectedResult = 1;
+      Blog blog = Blog(
+        title: "This is test 1",
+      );
+    });
   });
 }

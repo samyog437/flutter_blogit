@@ -1,4 +1,6 @@
+import 'package:blogit/model/blog.dart';
 import 'package:blogit/objectbox.g.dart';
+import 'package:blogit/repository/blog_respository.dart';
 import 'package:blogit/repository/user_repository.dart';
 import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
           await UserRepositoryImpl().loginUser(storedusername, storedpassword);
       if (isLogin) {
         setState(() {
-          Navigator.pushNamed(context, DashboardScreen.route,
+          Navigator.pushReplacementNamed(context, DashboardScreen.route,
               arguments: User_.userId);
         });
       }

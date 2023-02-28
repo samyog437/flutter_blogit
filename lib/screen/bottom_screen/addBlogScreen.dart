@@ -58,6 +58,11 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
 
   _showMessage(int status) {
     if (status > 0) {
+      setState(() {
+        _img = null;
+        _titleController.clear();
+        _contentController.clear();
+      });
       showSnackbar(context, 'Blog Added Successfully!', Colors.green);
     } else {
       showSnackbar(context, 'Error Adding Blog', Colors.red);

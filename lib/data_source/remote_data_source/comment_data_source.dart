@@ -28,4 +28,25 @@ class CommentRemoteDataSource {
       throw Exception('Failed to create comment');
     }
   }
+
+  Future<List<Comment>> getAllComment(String blogId) async {
+    try {
+      final response = await _httpServices
+          .get('${Constant.blogURL}/$blogId/${Constant.commentURL}');
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> commentDataList =
+            List<Map<String, dynamic>>.from(response.data);
+        print("blogDataList: $commentDataList");
+        final List<Comment> comments = commentDataList
+            .map((blogData) => Comment.fromJson(blogData))
+            .toList();
+        return comments;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load comments');
+    }
+  }
 }

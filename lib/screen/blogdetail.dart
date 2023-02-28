@@ -24,7 +24,16 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
   @override
   void didChangeDependencies() {
     blog = ModalRoute.of(context)!.settings.arguments as Blog;
+    _loadComments();
     super.didChangeDependencies();
+  }
+
+  _loadComments() async {
+    List<Comment> comments =
+        await CommentRepositoryImpl().getAllComment(blog.blogId!);
+    setState(() {
+      blog.comments = comments;
+    });
   }
 
   _addComment() async {
@@ -38,6 +47,11 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
 
   _showMessage(int status) {
     if (status > 0) {
+      setState(() {
+        _commentController.clear();
+        _loadComments();
+      });
+
       showSnackbar(context, 'Blog Added Successfully!', Colors.green);
     } else {
       showSnackbar(context, 'Error Adding Blog', Colors.red);
@@ -59,13 +73,15 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Image.network(
-                    Constant.blogImageURL + blog.image!,
-                    height: constraints.maxWidth * 0.5,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(
+                  blog.image != null
+                      ? Image.network(
+                          Constant.blogImageURL + blog.image!,
+                          height: constraints.maxWidth * 0.5,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : const SizedBox.shrink(),
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -100,7 +116,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                       children: [
                         TextFormField(
                           controller: _commentController,
-                          maxLines: 5,
+                          maxLines: null,
                           decoration: InputDecoration(
                             errorStyle: const TextStyle(
                               color: Colors.white,

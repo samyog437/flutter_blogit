@@ -4,6 +4,7 @@ import 'package:blogit/app/constants.dart';
 import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/repository/blog_respository.dart';
+import 'package:blogit/screen/bottom_screen/profilescreen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -41,25 +42,25 @@ class _EditBlogScreenState extends State<EditBlogScreen> {
     super.didChangeDependencies();
   }
 
-  Future<void> _editedBlog() async {
+  _editedBlog() async {
     Blog updatedBlog = Blog(
       title: _titleController.text,
       content: _contentController.text,
     );
-    print('Updating blog: $updatedBlog');
-    print("Before calling editBlog method");
     int status = await BlogRepositoryImpl()
         .editBlog(_editedImage, updatedBlog, blog, Constant.userId);
-    print('Sent Blog: ${updatedBlog}');
-    print('Sent ID : ${blog.user?.usrId.toString().trim()}');
-    print("After calling editBlog method, result: $status");
-    print('Status: $status');
     _showMessage(status);
+    Navigator.popAndPushNamed(context, ProfileScreen.route);
   }
 
   _showMessage(int status) {
     print('Status: $status');
     if (status > 0) {
+      setState(() {
+        _titleController.clear();
+        _contentController.clear();
+        _editedImage = null;
+      });
       showSnackbar(context, 'Blog Added Successfully!', Colors.green);
     } else if (status == 0) {
       showSnackbar(context, 'Error Adding Blog', Colors.red);
@@ -90,20 +91,32 @@ class _EditBlogScreenState extends State<EditBlogScreen> {
       appBar: AppBar(
         title: const Text('Edit Blog'),
       ),
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Stack(
-                alignment: Alignment.center,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
                     child: _editedImage != null
-                        ? Image.file(_editedImage!)
-                        : Image.network(
-                            Constant.blogImageURL + (blog.image ?? '')),
+                        ? Image.file(_editedImage!, fit: BoxFit.cover)
+                        : (blog.image != null
+                            ? Image.network(Constant.blogImageURL + blog.image!,
+                                fit: BoxFit.cover)
+                            : const Center(
+                                child: Text(
+                                  'Add an image',
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -115,6 +128,7 @@ class _EditBlogScreenState extends State<EditBlogScreen> {
                         icon: const Icon(Icons.camera),
                         label: const Text('Camera'),
                       ),
+                      const SizedBox(width: 10),
                       ElevatedButton.icon(
                         onPressed: () {
                           _browseImage(ImageSource.gallery);
@@ -124,41 +138,58 @@ class _EditBlogScreenState extends State<EditBlogScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a title';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _contentController,
+                    maxLines: null,
+                    decoration: const InputDecoration(
+                      labelText: 'Content',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter some content';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        final updatedBlog = await _editedBlog();
+                        Navigator.pop(context, updatedBlog);
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(const Color(0xFFad5389)),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Text(
+                        'Edit Blog',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _contentController,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  labelText: 'Content',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _editedBlog();
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(const Color(0xFFad5389)),
-                ),
-                child: const Text(
-                  'Edit Blog',
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),

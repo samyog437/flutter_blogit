@@ -26,7 +26,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _userblogs = BlogRepositoryImpl().getAllUserBlog(Constant.userId);
+    setState(() {
+      _userblogs = BlogRepositoryImpl().getAllUserBlog(Constant.userId);
+    });
   }
 
   // _deleteBlog(Blog blog) async {
@@ -55,6 +57,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 int status = await BlogRepositoryImpl()
                     .deleteBlog(blog, Constant.userId);
                 _showMessage(status);
+                setState(() {
+                  _userblogs =
+                      BlogRepositoryImpl().getAllUserBlog(Constant.userId);
+                });
               },
               child: Text("Delete"),
             ),
@@ -79,111 +85,128 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: ClipOval(
-              child: Material(
-                color: Colors.transparent,
-                child: Ink.image(
-                  image: const NetworkImage(
-                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/puffin.jpg'),
-                  fit: BoxFit.cover,
-                  width: 128,
-                  height: 128,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Ink.image(
+                      image: const NetworkImage(
+                        'https://flutter.github.io/assets-for-api-docs/assets/widgets/puffin.jpg',
+                      ),
+                      fit: BoxFit.cover,
+                      width: 128,
+                      height: 128,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          const Text(
-            'John Doe',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            'johndoe@email.com',
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          const Text(
-            'My Blogs',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          Expanded(
-            child: Form(
-              key: _formKey,
-              child: FutureBuilder<List<Blog>>(
-                future: _userblogs,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text('Failed to load Blogs'),
-                      );
-                    }
-                    final List<Blog>? blogs = snapshot.data;
-                    if (blogs == null || blogs.isEmpty) {
-                      return const Center(
-                        child: Text('No blogs found'),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: blogs.length,
-                      itemBuilder: (context, index) {
-                        final Blog blog = blogs[index];
-                        return ListTile(
-                          title: Text(blog.title ?? ''),
-                          subtitle: Text(blog.content ?? ''),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  Navigator.pushNamed(
-                                      context, EditBlogScreen.route,
-                                      arguments: blog);
-                                },
-                                icon: const Icon(Icons.edit),
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    _deleteBlog(blog);
-                                  }
-                                },
-                                icon: const Icon(Icons.delete),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  'John Doe',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
               ),
-            ),
-          )
-        ],
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  'johndoe@email.com',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 30),
+                child: Text(
+                  'My Blogs',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Form(
+                  key: _formKey,
+                  child: FutureBuilder<List<Blog>>(
+                    future: _userblogs,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text('Failed to load Blogs'),
+                          );
+                        }
+                        final List<Blog>? blogs = snapshot.data;
+                        if (blogs == null || blogs.isEmpty) {
+                          return const Center(
+                            child: Text('No blogs found'),
+                          );
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: blogs.length,
+                          itemBuilder: (context, index) {
+                            final Blog blog = blogs[index];
+                            return ListTile(
+                              title: Text(blog.title ?? ''),
+                              subtitle: Text(blog.content ?? ''),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      Navigator.pushNamed(
+                                        context,
+                                        EditBlogScreen.route,
+                                        arguments: blog,
+                                      );
+                                    },
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        _deleteBlog(blog);
+                                      }
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
