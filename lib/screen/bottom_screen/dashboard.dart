@@ -1,4 +1,5 @@
 import 'package:blogit/screen/bottom_screen/addblogscreen.dart';
+import 'package:blogit/screen/bottom_screen/googleMap.dart';
 import 'package:blogit/screen/bottom_screen/homescreen.dart';
 import 'package:blogit/screen/bottom_screen/profilescreen.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     const HomeScreen(),
     const AddBlogScreen(),
     const ProfileScreen(),
+    const GoogleMapScreen(),
   ];
 
   _clearSharedPreferences() async {
@@ -60,6 +62,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: 'About Us',
+          )
         ],
         backgroundColor: Color(0xFFad5389),
         selectedItemColor: Colors.white,

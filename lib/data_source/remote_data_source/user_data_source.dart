@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:blogit/app/constants.dart';
 import 'package:blogit/data_source/remote_data_source/response/login_response.dart';
+import 'package:blogit/data_source/remote_data_source/response/user_response.dart';
 import 'package:blogit/helper/http_service.dart';
 import 'package:blogit/model/user.dart';
 import 'package:dio/dio.dart';
@@ -52,6 +53,27 @@ class UserRemoteDataSource {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<List<User>> getUserData(String userId) async {
+    try {
+      _httpServices.options.headers["Authorization"] = Constant.token;
+
+      final response = await _httpServices.get('${Constant.userURL}/$userId');
+      // print("API endpoint: ${Constant.userURL}/$userId");
+      // print("Status code: ${response.statusCode}");
+      // print("Response data: ${response.data}");
+
+      if (response.statusCode == 200) {
+        UserResponse userResponse = UserResponse.fromJson(response.data);
+        return userResponse.data!;
+      } else {
+        throw Exception('Failed to load User');
+      }
+    } catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to load user');
     }
   }
 }

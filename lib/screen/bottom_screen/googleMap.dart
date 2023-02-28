@@ -34,14 +34,11 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Google Map'),
-      ),
       body: GoogleMap(
         zoomGesturesEnabled: true,
         initialCameraPosition: CameraPosition(
           target: myLocation,
-          zoom: 10,
+          zoom: 13,
         ),
         markers: markers,
         mapType: MapType.normal,

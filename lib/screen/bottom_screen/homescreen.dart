@@ -41,22 +41,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 15,
                 ),
-                TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search blogs...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                Container(
+                  width: MediaQuery.of(context).size.width < 600 ? null : 700,
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: 'Search blogs...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchText = value;
+                      });
+                    },
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchText = value;
-                    });
-                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -93,6 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           constraints.maxWidth < 600 ? 20 : 28;
                       double contentFontSize =
                           constraints.maxWidth < 600 ? 16 : 22;
+                      double viewFontSize =
+                          constraints.maxWidth < 600 ? 14 : 18;
 
                       return Center(
                         child: SizedBox(
@@ -174,6 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                                 Text(
                                                   '${blog.view.toString()} views',
+                                                  style: TextStyle(
+                                                      fontSize: viewFontSize),
                                                 ),
                                               ],
                                             ),

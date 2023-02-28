@@ -44,15 +44,15 @@ class BlogRemoteDataSource {
   Future<List<Blog>> getAllBlog() async {
     try {
       final response = await _httpServices.get(Constant.blogURL);
-      print("API endpoint: ${Constant.blogURL}");
-      print("Status code: ${response.statusCode}");
-      print("Response data: ${response.data}");
+      // print("API endpoint: ${Constant.blogURL}");
+      // print("Status code: ${response.statusCode}");
+      // print("Response data: ${response.data}");
 
       if (response.statusCode == 200) {
         final List<Map<String, dynamic>> blogDataList =
             List<Map<String, dynamic>>.from(response.data);
 
-        print("blogDataList: $blogDataList");
+        // print("blogDataList: $blogDataList");
 
         final List<Blog> blogs =
             blogDataList.map((blogData) => Blog.fromJson(blogData)).toList();
@@ -69,14 +69,14 @@ class BlogRemoteDataSource {
   Future<List<Blog>> getAllUserBlog(String userId) async {
     try {
       final response = await _httpServices.get(Constant.blogURL);
-      print("API endpoint: ${Constant.blogURL}");
-      print("Status code: ${response.statusCode}");
-      print("Response data: ${response.data}");
+      // print("API endpoint: ${Constant.blogURL}");
+      // print("Status code: ${response.statusCode}");
+      // print("Response data: ${response.data}");
 
       if (response.statusCode == 200) {
         final List<Map<String, dynamic>> blogDataList =
             List<Map<String, dynamic>>.from(response.data);
-        print("blogDataList: $blogDataList");
+        // print("blogDataList: $blogDataList");
 
         final List<Blog> blogs = blogDataList
             .map((blogData) => Blog.fromJson(blogData))
@@ -97,13 +97,13 @@ class BlogRemoteDataSource {
       Response response = await _httpServices.get(
         '${Constant.blogURL}/$id',
       );
-      print("API endpoint: ${Constant.blogURL}/$id");
-      print("Status code: ${response.statusCode}");
-      print("Response data: ${response.data}");
+      // print("API endpoint: ${Constant.blogURL}/$id");
+      // print("Status code: ${response.statusCode}");
+      // print("Response data: ${response.data}");
       if (response.statusCode == 200) {
         Map<String, dynamic> blogJson = response.data;
         Blog blog = Blog.fromJson(blogJson);
-        print("Blog user: ${blog.user}");
+        // print("Blog user: ${blog.user}");
 
         return blog;
       } else {
@@ -139,9 +139,9 @@ class BlogRemoteDataSource {
         Constant.blogURL,
         data: formData,
       );
-      print("API endpoint: ${Constant.blogURL}");
-      print("Status code: ${response.statusCode}");
-      print("Response data: ${response.data}");
+      // print("API endpoint: ${Constant.blogURL}");
+      // print("Status code: ${response.statusCode}");
+      // print("Response data: ${response.data}");
       if (response.statusCode == 201) {
         return 1;
       } else {
@@ -157,9 +157,9 @@ class BlogRemoteDataSource {
   Future<int> editBlog(
       File? file, Blog updatedBlog, Blog blog, String userId) async {
     try {
-      print('Received userId: $userId');
-      print('Original Blog: ${blog.user?.usrId.toString()}, ${blog.blogId}');
-      print('Updated Blog:${blog.title}, ${blog.content} ');
+      // print('Received userId: $userId');
+      // print('Original Blog: ${blog.user?.usrId.toString()}, ${blog.blogId}');
+      // print('Updated Blog:${blog.title}, ${blog.content} ');
 
       if (blog.user?.usrId.toString().trim() == userId) {
         MultipartFile? image;
@@ -171,7 +171,7 @@ class BlogRemoteDataSource {
             contentType: MediaType('image', mimeType!.split("/")[1]),
           );
         }
-        print("Before creating FormData");
+        // print("Before creating FormData");
         FormData formData = FormData.fromMap({
           'title': updatedBlog.title,
           'content': updatedBlog.content,
@@ -179,20 +179,20 @@ class BlogRemoteDataSource {
         if (image != null) {
           formData.files.add(MapEntry('image', image));
         }
-        print("After creating FormData");
+        // print("After creating FormData");
 
         formData.fields.add(MapEntry("userId", userId));
         _httpServices.options.headers["Authorization"] = Constant.token;
-        print("Form Data: $formData");
+        // print("Form Data: $formData");
         Response response = await _httpServices.put(
           "${Constant.blogURL}/${blog.blogId}",
           data: formData,
         );
-        print("userId: $userId");
-        print("blog.id: ${blog.id}");
-        print("API endpoint: ${Constant.blogURL}/${blog.blogId}");
-        print("Status code: ${response.statusCode}");
-        print("Response data: ${response.data}");
+        // print("userId: $userId");
+        // print("blog.id: ${blog.id}");
+        // print("API endpoint: ${Constant.blogURL}/${blog.blogId}");
+        // print("Status code: ${response.statusCode}");
+        // print("Response data: ${response.data}");
         if (response.statusCode == 200) {
           return 1;
         } else {
@@ -217,9 +217,9 @@ class BlogRemoteDataSource {
         "${Constant.blogURL}/${blog.blogId}",
       );
 
-      print("userId: $userId");
-      print("Status code: ${response.statusCode}");
-      print("Response data: ${response.data}");
+      // print("userId: $userId");
+      // print("Status code: ${response.statusCode}");
+      // print("Response data: ${response.data}");
       if (response.statusCode == 200) {
         return 1;
       } else {

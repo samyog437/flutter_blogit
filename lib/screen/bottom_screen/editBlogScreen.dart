@@ -50,7 +50,6 @@ class _EditBlogScreenState extends State<EditBlogScreen> {
     int status = await BlogRepositoryImpl()
         .editBlog(_editedImage, updatedBlog, blog, Constant.userId);
     _showMessage(status);
-    Navigator.popAndPushNamed(context, ProfileScreen.route);
   }
 
   _showMessage(int status) {
@@ -60,6 +59,7 @@ class _EditBlogScreenState extends State<EditBlogScreen> {
         _titleController.clear();
         _contentController.clear();
         _editedImage = null;
+        Navigator.popAndPushNamed(context, ProfileScreen.route);
       });
       showSnackbar(context, 'Blog Added Successfully!', Colors.green);
     } else if (status == 0) {
