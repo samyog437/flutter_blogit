@@ -93,104 +93,128 @@ class _EditBlogScreenState extends State<EditBlogScreen> {
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: _editedImage != null
-                        ? Image.file(_editedImage!, fit: BoxFit.cover)
-                        : (blog.image != null
-                            ? Image.network(Constant.blogImageURL + blog.image!,
-                                fit: BoxFit.cover)
-                            : const Center(
-                                child: Text(
-                                  'Add an image',
-                                  textAlign: TextAlign.center,
-                                ),
-                              )),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          _browseImage(ImageSource.camera);
-                        },
-                        icon: const Icon(Icons.camera),
-                        label: const Text('Camera'),
+          child: LayoutBuilder(builder: (context, constraints) {
+            double imgWidth =
+                constraints.maxWidth < 600 ? constraints.maxWidth : 500;
+            double imgHeight =
+                constraints.maxHeight < 600 ? constraints.maxHeight : 300;
+            double resWidth =
+                constraints.maxWidth < 600 ? constraints.maxHeight : 750;
+            // double fieldWidth =
+            //     constraints.maxWidth < 600 ? resWidth : resWidth / 1;
+            return Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      height: imgHeight,
+                      width: imgWidth,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
                       ),
-                      const SizedBox(width: 10),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          _browseImage(ImageSource.gallery);
-                        },
-                        icon: const Icon(Icons.image),
-                        label: const Text('Gallery'),
+                      child: _editedImage != null
+                          ? Image.file(_editedImage!, fit: BoxFit.cover)
+                          : (blog.image != null
+                              ? Image.network(
+                                  Constant.blogImageURL + blog.image!,
+                                  fit: BoxFit.cover)
+                              : const Center(
+                                  child: Text(
+                                    'Add an image',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            _browseImage(ImageSource.camera);
+                          },
+                          icon: const Icon(Icons.camera),
+                          label: const Text('Camera'),
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            _browseImage(ImageSource.gallery);
+                          },
+                          icon: const Icon(Icons.image),
+                          label: const Text('Gallery'),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: resWidth,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: resWidth,
+                            child: TextFormField(
+                              controller: _titleController,
+                              decoration: const InputDecoration(
+                                labelText: 'Title',
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter a title';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: resWidth,
+                            child: TextFormField(
+                              controller: _contentController,
+                              maxLines: null,
+                              decoration: const InputDecoration(
+                                labelText: 'Content',
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter some content';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                final updatedBlog = await _editedBlog();
+                                Navigator.pop(context, updatedBlog);
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  const Color(0xFFad5389)),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: Text(
+                                'Edit Blog',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Title',
-                      border: OutlineInputBorder(),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter a title';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _contentController,
-                    maxLines: null,
-                    decoration: const InputDecoration(
-                      labelText: 'Content',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter some content';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        final updatedBlog = await _editedBlog();
-                        Navigator.pop(context, updatedBlog);
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xFFad5389)),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Text(
-                        'Edit Blog',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ),
+            );
+          }),
         ),
       ),
     );

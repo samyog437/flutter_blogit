@@ -13,8 +13,13 @@ abstract class UserRepository {
 
 class UserRepositoryImpl extends UserRepository {
   @override
-  Future<int> addUser(User user) {
-    return UserRemoteDataSource().addUser(user);
+  Future<int> addUser(User user) async {
+    bool status = await NetworkConnectivity.isOnline();
+    if (status) {
+      return UserRemoteDataSource().addUser(user);
+    } else {
+      return UserDataSource().addUser(user);
+    }
   }
 
   @override

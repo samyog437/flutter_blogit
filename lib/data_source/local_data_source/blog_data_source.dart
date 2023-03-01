@@ -31,7 +31,7 @@ class BlogDataSource {
 
   Future<Blog?> getABlog(String blogId) async {
     try {
-      return objectBoxInstance.getABlog(blogId);
+      return Future.value(objectBoxInstance.getABlog(blogId));
     } catch (e) {
       return null;
     }

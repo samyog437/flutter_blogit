@@ -263,7 +263,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           );
                         } else if (snapshot.hasError) {
-                          return const Text('Failed to load user data');
+                          return Center(
+                              child: const Text('Failed to load user data'));
                         } else {
                           return const SizedBox.shrink();
                         }

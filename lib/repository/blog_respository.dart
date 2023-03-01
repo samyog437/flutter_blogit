@@ -30,8 +30,7 @@ class BlogRepositoryImpl extends BlogRepository {
   Future<Blog?> getABlog(id) async {
     bool status = await NetworkConnectivity.isOnline();
     if (status) {
-      await BlogRemoteDataSource().getABlog(id);
-      await BlogDataSource().addBlog(id);
+      return BlogRemoteDataSource().getABlog(id);
     }
     return BlogDataSource().getABlog(id);
   }

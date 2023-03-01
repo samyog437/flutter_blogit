@@ -92,7 +92,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                     height: 10,
                   ),
                   Text(
-                    blog.user?.username ?? 'Unknown',
+                    'By ${blog.user?.username}',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -155,6 +155,7 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                     height: 20,
                   ),
                   ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: blog.comments!.length,
                     itemBuilder: (context, index) {

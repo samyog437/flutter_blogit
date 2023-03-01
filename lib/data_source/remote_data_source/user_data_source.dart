@@ -40,7 +40,7 @@ class UserRemoteDataSource {
         'email': user.email,
         'password': user.password,
       });
-
+      _httpServices.options.headers["Authorization"] = Constant.token;
       Response response = await _httpServices.put(
         '${Constant.userURL}/${user.usrId!}',
         data: json.encode(data),
