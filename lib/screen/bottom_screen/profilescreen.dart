@@ -22,7 +22,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<List<Blog>> _userblogs;
-  late Future<List<User>> _userData;
+  late Future<User> _userData;
   final _formKey = GlobalKey<FormState>();
   late Blog blog;
 
@@ -46,14 +46,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirm Deletion"),
-          content: Text("Are you sure you want to delete this blog?"),
+          title: const Text("Confirm Deletion"),
+          content: const Text("Are you sure you want to delete this blog?"),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () async {
@@ -92,6 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 constraints.maxWidth < 750 ? constraints.maxWidth : 750;
             double titleFontSize = constraints.maxWidth < 600 ? 20 : 28;
             double contentFontSize = constraints.maxWidth < 600 ? 16 : 22;
+            double viewFontSize = constraints.maxWidth < 600 ? 14 : 18;
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -123,9 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           final user = snapshot.data!;
                           final _formKey = GlobalKey<FormState>();
                           final TextEditingController _usernameController =
-                              TextEditingController(text: user[0].username!);
+                              TextEditingController(text: user.username!);
                           final TextEditingController _emailController =
-                              TextEditingController(text: user[0].email!);
+                              TextEditingController(text: user.email!);
                           final TextEditingController _passwordController =
                               TextEditingController();
                           return GestureDetector(
@@ -154,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           },
                                           onSaved: (value) {
                                             // update the username
-                                            user[0].username = value;
+                                            user.username = value;
                                           },
                                         ),
                                         TextFormField(
@@ -171,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           },
                                           onSaved: (value) {
                                             // update the email
-                                            user[0].email = value;
+                                            user.email = value;
                                           },
                                         ),
                                         TextFormField(
@@ -189,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           },
                                           onSaved: (value) {
                                             // update the password
-                                            user[0].password = value;
+                                            user.password = value;
                                           },
                                         ),
                                       ],
@@ -202,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           _formKey.currentState!.save();
                                           int result =
                                               await UserRepositoryImpl()
-                                                  .updateUser(user[0]);
+                                                  .updateUser(user);
                                           if (result == 1) {
                                             showSnackbar(
                                                 context,
@@ -238,33 +239,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  user[0].username!,
+                                  user.username!,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 24,
+                                    fontSize: titleFontSize,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  user[0].email!,
+                                  user.email!,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.blue,
-                                    fontSize: 16,
+                                    fontSize: contentFontSize,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                const Text(
+                                Text(
                                   'Tap to edit profile',
                                   textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: viewFontSize),
                                 ),
                               ],
                             ),
                           );
                         } else if (snapshot.hasError) {
-                          return Center(
-                              child: const Text('Failed to load user data'));
+                          return const Center(
+                              child: Text('Failed to load user data'));
                         } else {
                           return const SizedBox.shrink();
                         }
@@ -283,7 +285,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Form(
                       key: _formKey,
                       child: FutureBuilder<List<Blog>>(

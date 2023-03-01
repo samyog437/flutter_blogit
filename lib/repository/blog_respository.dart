@@ -22,8 +22,10 @@ class BlogRepositoryImpl extends BlogRepository {
     if (status) {
       lstBlog = await BlogRemoteDataSource().getAllBlog();
       await BlogDataSource().addAllBlog(lstBlog);
+      return lstBlog;
+    } else {
+      return BlogDataSource().getAllBlog();
     }
-    return BlogDataSource().getAllBlog();
   }
 
   @override

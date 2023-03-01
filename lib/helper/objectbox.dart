@@ -1,4 +1,5 @@
 import 'package:blogit/model/blog.dart';
+import 'package:blogit/model/comment.dart';
 import 'package:blogit/model/user.dart';
 import 'package:blogit/objectbox.g.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,10 +8,12 @@ class ObjectBoxInstance {
   late final Store _store;
   late final Box<User> _user;
   late final Box<Blog> _blog;
+  late final Box<Comment> _comment;
 
   ObjectBoxInstance(this._store) {
     _user = Box<User>(_store);
     _blog = Box<Blog>(_store);
+    _comment = Box<Comment>(_store);
   }
 
   static Future<ObjectBoxInstance> init() async {
@@ -49,6 +52,10 @@ class ObjectBoxInstance {
 
   List<User> getAllUser() {
     return _user.getAll();
+  }
+
+  List<Comment> getAllComment(String blogId) {
+    return _comment.getAll();
   }
 
   User? loginUser(String username, String password) {

@@ -7,7 +7,7 @@ abstract class UserRepository {
   Future<List<User>> getAllUser();
   Future<int> addUser(User user);
   Future<bool> loginUser(String username, String password);
-  Future<List<User>> getUserData(String userId);
+  Future<User> getUserData(String userId);
   Future<int> updateUser(User user);
 }
 
@@ -38,7 +38,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<List<User>> getUserData(String userId) {
+  Future<User> getUserData(String userId) {
     return UserRemoteDataSource().getUserData(userId);
   }
 

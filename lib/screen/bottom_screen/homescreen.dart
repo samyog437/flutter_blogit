@@ -42,18 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
         return CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: Center(
-                child: Container(
-                  width: cardWidth,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
+              title: Container(
+                width: constraints.maxWidth < 600 ? double.infinity : cardWidth,
+                height: constraints.maxHeight < 600 ? 40 : 45,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0,
                   ),
+                ),
+                child: Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: TextField(
@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         border: InputBorder.none,
                         icon: Icon(Icons.search),
                       ),
+                      style: TextStyle(fontSize: contentFontSize),
                       onChanged: (value) {
                         setState(() {
                           _searchText = value;

@@ -80,18 +80,16 @@ class UserRemoteDataSource {
     }
   }
 
-  Future<List<User>> getUserData(String userId) async {
+  Future<User> getUserData(String userId) async {
     try {
       _httpServices.options.headers["Authorization"] = Constant.token;
 
       final response = await _httpServices.get('${Constant.userURL}/$userId');
-      // print("API endpoint: ${Constant.userURL}/$userId");
-      // print("Status code: ${response.statusCode}");
-      // print("Response data: ${response.data}");
-
       if (response.statusCode == 200) {
-        UserResponse userResponse = UserResponse.fromJson(response.data);
-        return userResponse.data!;
+        final Map<String, dynamic> userData =
+            Map<String, dynamic>.from(response.data);
+        final User user = User.fromJson(userData);
+        return user;
       } else {
         throw Exception('Failed to load User');
       }

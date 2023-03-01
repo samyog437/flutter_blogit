@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:all_sensors2/all_sensors2.dart';
 import 'package:blogit/app/constants.dart';
 import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/model/comment.dart';
 import 'package:blogit/repository/comment_repository.dart';
+import 'package:blogit/screen/bottom_screen/dashboard.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +23,29 @@ class BlogDetailScreen extends StatefulWidget {
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   late Blog blog;
   final _commentController = TextEditingController();
+  final double distanceThreshold = 5.0;
+  late StreamSubscription<ProximityEvent> _proximitySubscription;
 
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _proximitySubscription = proximityEvents!.listen((ProximityEvent event) {
+      setState(() {
+        if (event.proximity < distanceThreshold) {
+          Navigator.pushReplacementNamed(context, DashboardScreen.route);
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _proximitySubscription.cancel();
+  }
 
   @override
   void didChangeDependencies() {
