@@ -1,3 +1,4 @@
+import 'package:blogit/app/network_connectivity.dart';
 import 'package:blogit/data_source/remote_data_source/user_data_source.dart';
 import 'package:blogit/model/user.dart';
 import 'package:blogit/data_source/local_data_source/user_data_source.dart';
@@ -7,6 +8,7 @@ abstract class UserRepository {
   Future<int> addUser(User user);
   Future<bool> loginUser(String username, String password);
   Future<List<User>> getUserData(String userId);
+  Future<int> updateUser(User user);
 }
 
 class UserRepositoryImpl extends UserRepository {
@@ -22,11 +24,21 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<bool> loginUser(String username, String password) async {
-    return UserRemoteDataSource().loginUser(username, password);
+    bool status = await NetworkConnectivity.isOnline();
+    if (status) {
+      return UserRemoteDataSource().loginUser(username, password);
+    } else {
+      return UserDataSource().loginUser(username, password);
+    }
   }
 
   @override
   Future<List<User>> getUserData(String userId) {
     return UserRemoteDataSource().getUserData(userId);
+  }
+
+  @override
+  Future<int> updateUser(User user) {
+    return UserRemoteDataSource().updateUser(user);
   }
 }

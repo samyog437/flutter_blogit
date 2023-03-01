@@ -1,3 +1,4 @@
+import 'package:blogit/app/snackbar.dart';
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/objectbox.g.dart';
 import 'package:blogit/repository/blog_respository.dart';
@@ -35,6 +36,13 @@ class _SplashScreenState extends State<SplashScreen> {
         setState(() {
           Navigator.pushReplacementNamed(context, DashboardScreen.route,
               arguments: User_.userId);
+        });
+      } else {
+        showSnackbar(context, 'Incorrect username or password', Colors.red);
+        await prefs.remove('username');
+        await prefs.remove('password');
+        setState(() {
+          Navigator.pushReplacementNamed(context, '/loginScreen');
         });
       }
     } else {

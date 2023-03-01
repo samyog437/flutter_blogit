@@ -33,6 +33,30 @@ class UserRemoteDataSource {
     }
   }
 
+  Future<int> updateUser(User user) async {
+    try {
+      Map<String, dynamic> data = ({
+        'username': user.username,
+        'email': user.email,
+        'password': user.password,
+      });
+
+      Response response = await _httpServices.put(
+        '${Constant.userURL}/${user.usrId!}',
+        data: json.encode(data),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      return 0;
+    }
+  }
+
   Future<bool> loginUser(String username, String password) async {
     try {
       Response response = await _httpServices.post(

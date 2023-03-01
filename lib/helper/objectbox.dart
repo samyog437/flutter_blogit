@@ -26,8 +26,21 @@ class ObjectBoxInstance {
     return _blog.put(blog);
   }
 
+  addAllBlog(List<Blog> lstBlog) {
+    for (var item in lstBlog) {
+      if (_blog.query(Blog_.blogId.equals(item.blogId!)).build().findFirst() ==
+          null) {
+        _blog.put(item);
+      }
+    }
+  }
+
   List<Blog> getAllBlogs() {
     return _blog.getAll();
+  }
+
+  Blog? getABlog(String blogId) {
+    return _blog.query(Blog_.blogId.equals(blogId)).build().findFirst();
   }
 
   int addUser(User user) {

@@ -22,7 +22,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<List<Blog>> _userblogs;
-  late List<User> _userData;
+  late Future<List<User>> _userData;
   final _formKey = GlobalKey<FormState>();
   late Blog blog;
 
@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     setState(() {
       _userblogs = BlogRepositoryImpl().getAllUserBlog(Constant.userId);
+      _userData = UserRepositoryImpl().getUserData(Constant.userId);
     });
   }
 
@@ -91,7 +92,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 constraints.maxWidth < 750 ? constraints.maxWidth : 750;
             double titleFontSize = constraints.maxWidth < 600 ? 20 : 28;
             double contentFontSize = constraints.maxWidth < 600 ? 16 : 22;
-            double viewFontSize = constraints.maxWidth < 600 ? 14 : 18;
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -117,33 +117,155 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: FutureBuilder(
-                      future: UserRepositoryImpl().getUserData(Constant.userId),
+                      future: _userData,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final user = snapshot.data!;
-                          return Column(
-                            children: [
-                              Text(
-                                user[0].username!,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
+                          final _formKey = GlobalKey<FormState>();
+                          final TextEditingController _usernameController =
+                              TextEditingController(text: user[0].username!);
+                          final TextEditingController _emailController =
+                              TextEditingController(text: user[0].email!);
+                          final TextEditingController _passwordController =
+                              TextEditingController();
+                          return GestureDetector(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text(
+                                      'Edit username, email, and password'),
+                                  content: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          controller: _usernameController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Username',
+                                          ),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Please enter a username';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) {
+                                            // update the username
+                                            user[0].username = value;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          controller: _emailController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Email',
+                                          ),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Please enter an email address';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) {
+                                            // update the email
+                                            user[0].email = value;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          controller: _passwordController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Password',
+                                          ),
+                                          validator: (value) {
+                                            if (value != null &&
+                                                value.isNotEmpty &&
+                                                value.length < 6) {
+                                              return 'Password must be at least 6 characters long';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) {
+                                            // update the password
+                                            user[0].password = value;
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState!.save();
+                                          int result =
+                                              await UserRepositoryImpl()
+                                                  .updateUser(user[0]);
+                                          if (result == 1) {
+                                            showSnackbar(
+                                                context,
+                                                'User information updated successfully',
+                                                Colors.green);
+                                            Navigator.of(context).pop();
+                                          } else {
+                                            showSnackbar(
+                                                context,
+                                                'Failed to update user information',
+                                                Colors.red);
+                                          }
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          const Color(0xFFad5389),
+                                        ),
+                                      ),
+                                      child: const Text('Save'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                user[0].email!,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 20,
+                              );
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  user[0].username!,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 10),
+                                Text(
+                                  user[0].email!,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'Tap to edit profile',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           );
+                        } else if (snapshot.hasError) {
+                          return const Text('Failed to load user data');
                         } else {
-                          return SizedBox.shrink();
+                          return const SizedBox.shrink();
                         }
                       },
                     ),

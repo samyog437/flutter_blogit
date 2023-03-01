@@ -12,4 +12,28 @@ class BlogDataSource {
       return 0;
     }
   }
+
+  Future addAllBlog(List<Blog> lstBlog) async {
+    try {
+      return objectBoxInstance.addAllBlog(lstBlog);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<List<Blog>> getAllBlog() async {
+    try {
+      return Future.value(objectBoxInstance.getAllBlogs());
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<Blog?> getABlog(String blogId) async {
+    try {
+      return objectBoxInstance.getABlog(blogId);
+    } catch (e) {
+      return null;
+    }
+  }
 }

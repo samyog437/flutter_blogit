@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:blogit/app/network_connectivity.dart';
+import 'package:blogit/data_source/local_data_source/blog_data_source.dart';
 import 'package:blogit/data_source/remote_data_source/blog_data_source.dart';
 import 'package:blogit/model/blog.dart';
 
@@ -14,13 +16,24 @@ abstract class BlogRepository {
 
 class BlogRepositoryImpl extends BlogRepository {
   @override
-  Future<List<Blog>> getAllBlog() {
-    return BlogRemoteDataSource().getAllBlog();
+  Future<List<Blog>> getAllBlog() async {
+    bool status = await NetworkConnectivity.isOnline();
+    List<Blog> lstBlog = [];
+    if (status) {
+      lstBlog = await BlogRemoteDataSource().getAllBlog();
+      await BlogDataSource().addAllBlog(lstBlog);
+    }
+    return BlogDataSource().getAllBlog();
   }
 
   @override
-  Future<Blog?> getABlog(id) {
-    return BlogRemoteDataSource().getABlog(id);
+  Future<Blog?> getABlog(id) async {
+    bool status = await NetworkConnectivity.isOnline();
+    if (status) {
+      await BlogRemoteDataSource().getABlog(id);
+      await BlogDataSource().addBlog(id);
+    }
+    return BlogDataSource().getABlog(id);
   }
 
   @override
