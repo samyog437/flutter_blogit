@@ -24,8 +24,8 @@ void main() {
     test('User should be registered', () async {
       int expectedResult = 1;
       User user = User(
-        username: "testuser7",
-        email: "test7@email.com",
+        username: "testuser21",
+        email: "test21@email.com",
         password: "password",
       );
       int actualResult = await UserRemoteDataSource().addUser(user);
@@ -36,8 +36,8 @@ void main() {
       String userId = '63ee5e0963970e13e0bfa902';
       final user = User(
         usrId: userId,
-        username: 'testuser7',
-        email: 'test7@email.com',
+        username: 'testuser22',
+        email: 'test22@email.com',
         password: 'password',
       );
       Constant.token =
@@ -92,7 +92,7 @@ void main() {
     });
 
     test('Should get a blog', () async {
-      String blogId = "6400202364653aeb75aafac0";
+      String blogId = "6400788c64653aeb75aafde5";
 
       Blog expectedResult = Blog(
         blogId: blogId,
@@ -110,7 +110,7 @@ void main() {
     test('Should edit a blog', () async {
       int expectedResult = 1;
 
-      String blogId = "6400202364653aeb75aafac0";
+      String blogId = "6400cf1c2b5a13f3ad20cec2";
       String userId = "63dcf45d4bd954fa87a777db";
 
       Blog originalBlog = Blog(
@@ -136,7 +136,7 @@ void main() {
     });
 
     test('Should return 1 if comment is created successfully', () async {
-      String blogId = "6400202364653aeb75aafac0";
+      String blogId = "6400cf1c2b5a13f3ad20cec2";
       String comment = 'Great post!';
 
       Constant.token =
@@ -160,7 +160,7 @@ void main() {
 
       String userId = '63dcf45d4bd954fa87a777db';
       final Blog blogToDelete = Blog(
-        blogId: '6400202364653aeb75aafac0',
+        blogId: '6400cf1c2b5a13f3ad20cec2',
         user: User(usrId: userId),
         title: 'Updated title',
         content: 'Updated content',

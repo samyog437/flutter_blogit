@@ -65,6 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: const Text('Dashboard'),
         actions: [
           IconButton(
+              key: const ValueKey('logout'),
               icon: const Icon(Icons.logout),
               onPressed: () async {
                 _clearSharedPreferences();

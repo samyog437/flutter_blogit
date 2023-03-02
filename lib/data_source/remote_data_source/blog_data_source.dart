@@ -13,7 +13,6 @@ import 'package:mime/mime.dart';
 class BlogRemoteDataSource {
   final Dio _httpServices = HttpServices().getDioInstance();
 
-  
   Future<List<Blog>> getAllBlog() async {
     try {
       final response = await _httpServices.get(Constant.blogURL);

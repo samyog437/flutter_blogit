@@ -98,11 +98,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: FutureBuilder(
                       future: _userData,
                       builder: (context, snapshot) {
@@ -210,7 +210,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           const Color(0xFFad5389),
                                         ),
                                       ),
-                                      child: const Text('Save'),
+                                      child: const Text(
+                                        'Save',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
                                     TextButton(
                                       onPressed: () {

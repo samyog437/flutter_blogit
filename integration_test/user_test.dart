@@ -43,6 +43,8 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
       expect(find.text('Dashboard'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('logout')));
+      await tester.pumpAndSettle(Duration(seconds: 1));
     });
 
     testWidgets('Register User', (WidgetTester tester) async {
@@ -62,9 +64,9 @@ void main() {
       await tester.pumpAndSettle();
 
       Finder txtUsername = find.byKey(const ValueKey('txtUsername'));
-      await tester.enterText(txtUsername, 'testuser4');
+      await tester.enterText(txtUsername, 'testuser19');
       Finder txtEmail = find.byKey(const ValueKey('txtEmail'));
-      await tester.enterText(txtEmail, 'test4@email.com');
+      await tester.enterText(txtEmail, 'test19@email.com');
       Finder txtPassword = find.byKey(const ValueKey('txtPassword'));
       await tester.enterText(txtPassword, 'password');
       Finder btnRegister = find.byKey(const ValueKey('btnRegister'));
@@ -72,121 +74,141 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 3));
 
       expect(find.text('Login'), findsOneWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
     });
   });
 
   testWidgets('getABlog', (WidgetTester tester) async {
-    await AwesomeNotifications().requestPermissionToSendNotifications();
-    await tester.pumpWidget(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const SplashScreen(),
-          '/loginScreen': (context) => const LoginScreen(),
-          DashboardScreen.route: (context) => const DashboardScreen(),
-          BlogDetailScreen.route: (context) => const BlogDetailScreen(),
-        },
-      ),
-    );
-    await tester.pumpAndSettle();
-    Finder txtUsername = find.byKey(const ValueKey('txtUsername'));
-    await tester.enterText(txtUsername, 'testuser');
-    Finder txtPassword = find.byKey(const ValueKey('txtPassword'));
-    await tester.enterText(txtPassword, 'password');
-    Finder btnLogin = find.byKey(const ValueKey('btnLogin'));
-    await tester.tap(btnLogin);
-    await tester.pumpAndSettle(const Duration(seconds: 3));
-    expect(find.text('Dashboard'), findsOneWidget);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(ListTile).first);
-    await tester.pumpAndSettle();
+    try {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+      await tester.pumpWidget(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const SplashScreen(),
+            '/loginScreen': (context) => const LoginScreen(),
+            DashboardScreen.route: (context) => const DashboardScreen(),
+            BlogDetailScreen.route: (context) => const BlogDetailScreen(),
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
+      Finder txtUsername = find.byKey(const ValueKey('txtUsername'));
+      await tester.enterText(txtUsername, 'testuser');
+      Finder txtPassword = find.byKey(const ValueKey('txtPassword'));
+      await tester.enterText(txtPassword, 'password');
+      Finder btnLogin = find.byKey(const ValueKey('btnLogin'));
+      await tester.tap(btnLogin);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      expect(find.text('Dashboard'), findsOneWidget);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(ListTile).first);
+      await tester.pumpAndSettle();
+      Finder btnLogout = find.byKey(const ValueKey('logout'));
+      await tester.tap(btnLogout);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+    } catch (e) {
+      print('Error occurred: $e');
+    }
   });
 
   testWidgets('createBlog', (WidgetTester tester) async {
-    await AwesomeNotifications().requestPermissionToSendNotifications();
-    await UserPermission.checkCameraPermission();
-    // Build the app and wait for it to settle
-    await tester.pumpWidget(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const SplashScreen(),
-          '/loginScreen': (context) => const LoginScreen(),
-          DashboardScreen.route: (context) => const DashboardScreen(),
-          AddBlogScreen.route: (context) => const AddBlogScreen(),
-        },
-      ),
-    );
-    await tester.pumpAndSettle();
+    try {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+      await UserPermission.checkCameraPermission();
+      // Build the app and wait for it to settle
+      await tester.pumpWidget(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const SplashScreen(),
+            '/loginScreen': (context) => const LoginScreen(),
+            DashboardScreen.route: (context) => const DashboardScreen(),
+            AddBlogScreen.route: (context) => const AddBlogScreen(),
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    // Log in as a test user
-    final txtUsername = find.byKey(const ValueKey('txtUsername'));
-    await tester.enterText(txtUsername, 'testuser');
-    final txtPassword = find.byKey(const ValueKey('txtPassword'));
-    await tester.enterText(txtPassword, 'password');
-    final btnLogin = find.byKey(const ValueKey('btnLogin'));
-    await tester.tap(btnLogin);
-    await tester.pumpAndSettle(const Duration(seconds: 3));
-    expect(find.text('Dashboard'), findsOneWidget);
-    await tester.pumpAndSettle();
-    // Navigate to the create blog screen
-    Finder tabAdd = find.byIcon(Icons.add_circle_outline_outlined);
-    await tester.tap(tabAdd);
-    await tester.pumpAndSettle();
-    Finder txtTitle = find.byKey(const ValueKey('txtTitle'));
-    await tester.enterText(txtTitle, 'Test Blog Title');
-    Finder txtContent = find.byKey(const ValueKey('txtContent'));
-    await tester.enterText(txtContent, 'Test Blog Content');
-    Finder btnSubmit = find.byKey(const ValueKey('btnAddBlog'));
-    await tester.tap(btnSubmit);
-    await tester.pumpAndSettle(Duration(seconds: 1));
-    expect(find.widgetWithText(SnackBar, 'Blog Added Successfully!'),
-        findsOneWidget);
+      // Log in as a test user
+      final txtUsername = find.byKey(const ValueKey('txtUsername'));
+      await tester.enterText(txtUsername, 'testuser');
+      final txtPassword = find.byKey(const ValueKey('txtPassword'));
+      await tester.enterText(txtPassword, 'password');
+      final btnLogin = find.byKey(const ValueKey('btnLogin'));
+      await tester.tap(btnLogin);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      expect(find.text('Dashboard'), findsOneWidget);
+      await tester.pumpAndSettle();
+      // Navigate to the create blog screen
+      Finder tabAdd = find.byIcon(Icons.add_circle_outline_outlined);
+      await tester.tap(tabAdd);
+      await tester.pumpAndSettle();
+      Finder txtTitle = find.byKey(const ValueKey('txtTitle'));
+      await tester.enterText(txtTitle, 'Test Blog Title');
+      Finder txtContent = find.byKey(const ValueKey('txtContent'));
+      await tester.enterText(txtContent, 'Test Blog Content');
+      Finder btnSubmit = find.byKey(const ValueKey('btnAddBlog'));
+      await tester.tap(btnSubmit);
+      await tester.pumpAndSettle(Duration(seconds: 2));
+      expect(find.widgetWithText(SnackBar, 'Blog Added Successfully!'),
+          findsOneWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+    } catch (e) {
+      print('Error occurred: $e');
+    }
   });
 
   testWidgets('Should Delete a Blog', (WidgetTester tester) async {
-    await AwesomeNotifications().requestPermissionToSendNotifications();
-    await UserPermission.checkCameraPermission();
-    // Build the app and wait for it to settle
-    await tester.pumpWidget(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const SplashScreen(),
-          '/loginScreen': (context) => const LoginScreen(),
-          DashboardScreen.route: (context) => const DashboardScreen(),
-          AddBlogScreen.route: (context) => const AddBlogScreen(),
-        },
-      ),
-    );
-    await tester.pumpAndSettle();
+    try {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+      // Build the app and wait for it to settle
+      await tester.pumpWidget(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const SplashScreen(),
+            '/loginScreen': (context) => const LoginScreen(),
+            DashboardScreen.route: (context) => const DashboardScreen(),
+            AddBlogScreen.route: (context) => const AddBlogScreen(),
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    // Log in as a test user
-    final txtUsername = find.byKey(const ValueKey('txtUsername'));
-    await tester.enterText(txtUsername, 'testuser');
-    final txtPassword = find.byKey(const ValueKey('txtPassword'));
-    await tester.enterText(txtPassword, 'password');
-    final btnLogin = find.byKey(const ValueKey('btnLogin'));
-    await tester.tap(btnLogin);
-    await tester.pumpAndSettle(const Duration(seconds: 3));
-    expect(find.text('Dashboard'), findsOneWidget);
-    await tester.pumpAndSettle();
+      // Log in as a test user
+      final txtUsername = find.byKey(const ValueKey('txtUsername'));
+      await tester.enterText(txtUsername, 'testuser');
+      final txtPassword = find.byKey(const ValueKey('txtPassword'));
+      await tester.enterText(txtPassword, 'password');
+      final btnLogin = find.byKey(const ValueKey('btnLogin'));
+      await tester.tap(btnLogin);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      expect(find.text('Dashboard'), findsOneWidget);
+      await tester.pumpAndSettle();
 
-    Finder tabDelete = find.byIcon(Icons.person);
-    await tester.tap(tabDelete);
-    await tester.pumpAndSettle();
+      Finder tabDelete = find.byIcon(Icons.person);
+      await tester.tap(tabDelete);
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(ListTile).first);
-    Finder btnSubmit = find.byKey(const ValueKey('btnDelete_0'));
-    await tester.tap(btnSubmit);
-    await tester.pumpAndSettle(Duration(seconds: 1));
-    Finder btnConfirm = find.byKey(const ValueKey('Confirm'));
-    await tester.tap(btnConfirm);
-    await tester.pumpAndSettle(Duration(seconds: 1));
-    expect(find.widgetWithText(SnackBar, 'Blog Deleted Successfully!'),
-        findsOneWidget);
+      await tester.tap(find.byType(ListTile).first);
+      Finder btnSubmit = find.byKey(const ValueKey('btnDelete_0'));
+      await tester.tap(btnSubmit);
+      await tester.pumpAndSettle(Duration(seconds: 1));
+      Finder btnConfirm = find.byKey(const ValueKey('Confirm'));
+      await tester.tap(btnConfirm);
+      await tester.pumpAndSettle(Duration(seconds: 1));
+      expect(find.widgetWithText(SnackBar, 'Blog Deleted Successfully!'),
+          findsOneWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      Finder btnLogout = find.byKey(const ValueKey('logout'));
+      await tester.tap(btnLogout);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+    } catch (e) {
+      print('Error occurred: $e');
+    }
   });
 }

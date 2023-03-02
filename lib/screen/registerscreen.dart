@@ -15,9 +15,9 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController(text: 'testuser');
-  final _emailController = TextEditingController(text: 'test@email.com');
-  final _passwordController = TextEditingController(text: 'password');
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   _saveUser() async {
     User user = User(

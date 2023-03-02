@@ -1,10 +1,8 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:blogit/app/snackbar.dart';
-import 'package:blogit/model/user.dart';
 import 'package:blogit/repository/user_repository.dart';
 import 'package:blogit/screen/bottom_screen/dashboard.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -188,13 +186,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(
                           height: 20,
-                        ),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.white),
-                          ),
                         ),
                       ],
                     ),
