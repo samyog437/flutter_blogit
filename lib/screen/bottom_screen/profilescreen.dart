@@ -56,6 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: const Text("Cancel"),
             ),
             TextButton(
+              key: const ValueKey('Confirm'),
               onPressed: () async {
                 Navigator.of(context).pop();
                 int status = await BlogRepositoryImpl()
@@ -90,30 +91,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (BuildContext context, BoxConstraints constraints) {
             double cardWidth =
                 constraints.maxWidth < 750 ? constraints.maxWidth : 750;
-            double titleFontSize = constraints.maxWidth < 600 ? 20 : 28;
-            double contentFontSize = constraints.maxWidth < 600 ? 16 : 22;
-            double viewFontSize = constraints.maxWidth < 600 ? 14 : 18;
+            double titleFontSize = constraints.maxWidth < 600 ? 22 : 28;
+            double contentFontSize = constraints.maxWidth < 600 ? 18 : 22;
+            double viewFontSize = constraints.maxWidth < 600 ? 16 : 18;
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(
                     height: 20,
-                  ),
-                  Center(
-                    child: ClipOval(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Ink.image(
-                          image: const NetworkImage(
-                            'https://flutter.github.io/assets-for-api-docs/assets/widgets/puffin.jpg',
-                          ),
-                          fit: BoxFit.cover,
-                          width: 128,
-                          height: 128,
-                        ),
-                      ),
-                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
@@ -257,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  'Tap to edit profile',
+                                  'Tap to edit profile details',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: viewFontSize),
                                 ),
@@ -358,6 +344,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 ),
                                               ),
                                               IconButton(
+                                                key: ValueKey(
+                                                    'btnDelete_$index'),
                                                 onPressed: () async {
                                                   if (_formKey.currentState!
                                                       .validate()) {

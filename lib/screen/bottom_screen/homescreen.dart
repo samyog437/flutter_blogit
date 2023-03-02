@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverAppBar(
               title: Container(
                 width: constraints.maxWidth < 600 ? double.infinity : cardWidth,
-                height: constraints.maxHeight < 600 ? 40 : 45,
+                height: constraints.maxHeight < 600 ? 48 : 45,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -56,19 +56,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: const InputDecoration(
-                        hintText: 'Search blogs...',
-                        border: InputBorder.none,
-                        icon: Icon(Icons.search),
-                      ),
-                      style: TextStyle(fontSize: contentFontSize),
-                      onChanged: (value) {
-                        setState(() {
-                          _searchText = value;
-                        });
-                      },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: const InputDecoration(
+                              hintText: 'Search blogs...',
+                              border: InputBorder.none,
+                              icon: Icon(Icons.search),
+                            ),
+                            style: TextStyle(fontSize: contentFontSize),
+                            onChanged: (value) {
+                              setState(() {
+                                _searchText = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -177,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   } else {
-                    return SliverFillRemaining(
+                    return const SliverFillRemaining(
                       child: Center(
                         child: CircularProgressIndicator(),
                       ),

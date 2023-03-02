@@ -9,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 class AddBlogScreen extends StatefulWidget {
   const AddBlogScreen({super.key});
 
+  static const String route = "AddBlogScreen";
+
   @override
   State<AddBlogScreen> createState() => _AddBlogScreenState();
 }
@@ -137,6 +139,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
                       child: Column(
                         children: [
                           TextFormField(
+                            key: const Key('txtTitle'),
                             controller: _titleController,
                             decoration: InputDecoration(
                               errorStyle: const TextStyle(
@@ -153,6 +156,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
+                            key: const Key('txtContent'),
                             controller: _contentController,
                             maxLines: null,
                             decoration: InputDecoration(
@@ -170,6 +174,7 @@ class _AddBlogScreenState extends State<AddBlogScreen> {
                           ),
                           const SizedBox(height: 20),
                           ElevatedButton(
+                            key: const ValueKey('btnAddBlog'),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _addBlog();

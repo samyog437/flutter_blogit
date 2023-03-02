@@ -23,7 +23,7 @@ class BlogDetailScreen extends StatefulWidget {
 class _BlogDetailScreenState extends State<BlogDetailScreen> {
   late Blog blog;
   final _commentController = TextEditingController();
-  final double distanceThreshold = 5.0;
+  final double distanceThreshold = 4.0;
   late StreamSubscription<ProximityEvent> _proximitySubscription;
 
   final _formKey = GlobalKey<FormState>();
@@ -180,23 +180,29 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: blog.comments!.length,
-                    itemBuilder: (context, index) {
-                      var comment = blog.comments![index];
-                      final dateTime = DateTime.parse(comment.date!);
-                      final formattedDate = DateFormat.yMd().format(dateTime);
+                  blog.comments!.isNotEmpty
+                      ? ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: blog.comments!.length,
+                          itemBuilder: (context, index) {
+                            var comment = blog.comments![index];
+                            final dateTime = DateTime.parse(comment.date!);
+                            final formattedDate =
+                                DateFormat.yMd().format(dateTime);
 
-                      print('Comment is: $comment');
-                      return ListTile(
-                          leading: const Icon(Icons.comment),
-                          title: Text(comment.body!),
-                          subtitle: Text(comment.commenterName ?? 'Unknown'),
-                          trailing: Text(formattedDate));
-                    },
-                  ),
+                            print('Comment is: $comment');
+                            return ListTile(
+                                leading: const Icon(Icons.comment),
+                                title: Text(comment.body!),
+                                subtitle:
+                                    Text(comment.commenterName ?? 'Unknown'),
+                                trailing: Text(formattedDate));
+                          },
+                        )
+                      : const Center(
+                          child: Text('No comments found'),
+                        ),
                 ],
               ),
             ),

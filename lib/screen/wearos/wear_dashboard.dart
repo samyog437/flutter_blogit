@@ -1,6 +1,7 @@
 import 'package:blogit/model/blog.dart';
 import 'package:blogit/repository/blog_respository.dart';
 import 'package:blogit/screen/blogdetail.dart';
+import 'package:blogit/screen/wearos/wear_blogdetail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -78,8 +79,8 @@ class _WearDashboardScreenState extends State<WearDashboardScreen> {
                                         ),
                                         child: ListTile(
                                           onTap: () {
-                                            Navigator.pushNamed(
-                                                context, BlogDetailScreen.route,
+                                            Navigator.pushNamed(context,
+                                                WearBlogDetailScreen.route,
                                                 arguments: blog);
                                           },
                                           title: Padding(
